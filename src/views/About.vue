@@ -42,7 +42,6 @@ const data = {
     <p>
       API URL: <a :href="data.appInfo?.apiUrl" target="_blank">{{ data.appInfo.apiUrl }}</a>
     </p>
-    <p>isProduction: {{ data.appInfo.isProduction }}</p>
     <div style="text-align: center">
       <router-link to="/">首页</router-link>
     </div>
