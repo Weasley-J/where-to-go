@@ -109,6 +109,7 @@ onBeforeMount(async () => {
 <template>
   <div class="icons">
     <swiper
+      :modules="swiperModules"
       :autoplay="swiperOption.autoplay"
       :loop="swiperOption.loop"
       :navigation="false"
