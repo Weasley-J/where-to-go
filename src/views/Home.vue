@@ -61,6 +61,9 @@ watch(route, () => {
     <div class="fetch-home-data">
       <button class="fetch-data-btn" @click="fetchAllData">刷新数据</button>
     </div>
+    <nav>
+      <router-link class="navigation-button" to="/about">关于</router-link>
+    </nav>
   </div>
 </template>
 
@@ -72,10 +75,21 @@ watch(route, () => {
 }
 
 .fetch-data-btn {
-  display: inline-block;
+  display: none;
   background-color: #fff;
   color: #00bcd4;
   border: 1px solid #00bcd4;
   border-radius: 8px;
+}
+
+nav {
+  margin-top: 18px;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.navigation-button {
+  color: #00bcd4;
+  text-decoration: none;
 }
 </style>
