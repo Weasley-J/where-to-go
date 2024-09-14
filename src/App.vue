@@ -1,13 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <div class="wrapper">
+  <div>
     <RouterView />
-    <nav>
-      <router-link to="/about">关于</router-link>
-    </nav>
   </div>
 </template>
 
