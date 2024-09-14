@@ -118,11 +118,11 @@ onBeforeMount(async () => {
       :slides-per-view="1"
     >
       <swiper-slide v-for="(page, index) in paginationIcons" :key="index">
-        <div v-for="item in page" :key="item.id" class="icon">
+        <div v-for="({ id, imgUrl, desc }, index) in page" :key="id" class="icon">
           <div class="icon-img">
-            <img :src="item.imgUrl" alt="" class="icon-img-content" />
+            <img :src="imgUrl" alt="" class="icon-img-content" />
           </div>
-          <p class="icon-desc">{{ item.desc }}</p>
+          <p class="icon-desc">{{ desc }}</p>
         </div>
       </swiper-slide>
     </swiper>

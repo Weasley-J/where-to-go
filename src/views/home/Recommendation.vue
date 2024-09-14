@@ -55,6 +55,7 @@ ellipse()
 .recommendation-title
   margin-top 0.85rem
   line-height 1.5rem
+  font-size: 1rem
   background-color #eee
   text-indent 0.6rem
 
