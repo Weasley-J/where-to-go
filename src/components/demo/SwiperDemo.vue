@@ -11,9 +11,9 @@ const swiperModules = [Pagination, Navigation]
 <template>
   <div class="swiper">
     <swiper :loop="true" :modules="swiperModules" navigation pagination slides-per-view="1">
-      <swiper-slide class="swiper-content">Slide 1</swiper-slide>
-      <swiper-slide class="swiper-content">Slide 2</swiper-slide>
-      <swiper-slide class="swiper-content">Slide 3</swiper-slide>
+      <swiper-slide class="swiper-content">This is slide 1</swiper-slide>
+      <swiper-slide class="swiper-content">This is slide 2</swiper-slide>
+      <swiper-slide class="swiper-content">This is slide 3</swiper-slide>
     </swiper>
   </div>
 </template>
