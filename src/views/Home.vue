@@ -1,13 +1,13 @@
 <script setup>
-import HomeHeader from '@/components/home/Header.vue'
-import HomeSwiper from '@/components/home/HomeSwiper.vue'
-import HomeIcons from '@/components/home/Icons.vue'
+import HomeHeader from '@/views/home/Header.vue'
+import HomeSwiper from '@/views/home/HomeSwiper.vue'
+import HomeIcons from '@/views/home/Icons.vue'
 import { onMounted, ref, watch } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
-import Recommendation from '@/components/home/Recommendation.vue'
+import HomeRecommendation from '@/views/home/Recommendation.vue'
+import HomeWeekend from '@/views/home/Weekend.vue'
 import { Navigation, Pagination } from 'swiper/modules'
-import SwiperDemo from '@/components/demo/SwiperDemo.vue'
 
 // 定义数据
 const whereToDoData = ref(null)
@@ -53,11 +53,11 @@ watch(route, () => {
 
 <template>
   <div>
-    <home-header></home-header>
-    <home-swiper></home-swiper>
+    <home-header />
+    <home-swiper />
     <home-icons :swiper-modules="swiperModules" :where-to-go-icon-package="whereToGoIconPackage" />
-    <swiper-demo></swiper-demo>
-    <recommendation></recommendation>
+    <home-recommendation />
+    <home-weekend />
     <div class="fetch-home-data">
       <button class="fetch-data-btn" @click="fetchAllData">刷新数据</button>
     </div>
@@ -66,7 +66,8 @@ watch(route, () => {
 
 <style scoped>
 .fetch-home-data {
-  margin-top: 68px;
+  margin-top: 18px;
+  margin-bottom: 18px;
   text-align: center;
 }
 
