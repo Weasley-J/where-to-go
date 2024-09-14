@@ -12,7 +12,7 @@ let dbPassword = import.meta.env.DB_PASSWORD
 console.log('Vite app name: ', viteAppName)
 console.log('Vite app ID: ', viteAppId)
 console.log('Vite app env: ', appEnv)
-console.log('Vite is prod: ', isProduction) // undefined
+console.log('Vite is prod: ', isProduction)
 console.log('DB password: ', dbPassword) // undefined
 
 const data = {
@@ -49,4 +49,11 @@ const data = {
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.font-container {
+}
+
+.centered-text {
+  text-align: center;
+}
+</style>

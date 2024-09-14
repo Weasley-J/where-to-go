@@ -3,7 +3,7 @@ import { version as vueVersion } from 'vue'
 
 let viteAppName = import.meta.env.VITE_APP_NAME
 let viteAppId = import.meta.env.VITE_APP_ID
-let apiUrl = import.meta.env.VITE_API_URL
+let apiUrl = import.meta.env.VITE_DOMAIN_QUNAR_COM_TOUCH_DUJIA
 let appEnv = import.meta.env.VITE_APP_ENV
 let isProduction = import.meta.env.VITE_IS_PROD
 
@@ -17,6 +17,8 @@ const data = {
     isProduction: isProduction
   }
 }
+
+console.log(data)
 </script>
 
 <template>
