@@ -57,6 +57,7 @@ watch(route, () => {
 // 跳转到关于页面：并传递数据，不改变地址栏
 function goToAbout() {
   store.commit('setIconPackage', whereToDoData)
+  store.commit('setShowJSONData', false)
   router
     .push('/about') // to [/about]
     .then(() => {

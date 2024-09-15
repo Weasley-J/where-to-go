@@ -26,14 +26,15 @@ const router = useRouter()
 let lastRoute = router.options.history.state.back // 上一个路由的完整路径
 let currentRoute = route.fullPath // 当前路由的完整路径
 // 路由变化 - 更新数据
-const whereToGoIconSrcPackage = ref(
-  computed(() => {
-    let data = store.state.whereToGoIconPackage
-    if (isDebugEnable && data && data.length > 0)
-      console.log(`收到路由[${lastRoute}]跳转到路由[${currentRoute}]携带的数据: ${data.length} 条`)
-    return data
-  })
-)
+const whereToGoIconSrcPackage = computed(() => {
+  let data = store.state.whereToGoIconPackage
+  if (isDebugEnable && data && data.length > 0)
+    console.log(`收到路由[${lastRoute}]跳转到路由[${currentRoute}]携带的数据: ${data.length} 条`)
+  return data
+})
+const showJSONData = computed(() => {
+  return store.state.showJSONData
+})
 const data = ref({
   vueVersion: vueVersion,
   appInfo: {
@@ -71,10 +72,12 @@ function gotoHome() {
         >首页
       </router-link>
     </div>
-    <ul v-for="(item, index) of whereToGoIconSrcPackage" :key="index">
-      <li style="text-indent: 2px; margin-bottom: 2px; font-size: large">{{ item.name }}</li>
-      <textarea cols="40" rows="5">{{ item }}</textarea>
-    </ul>
+    <div v-show="showJSONData">
+      <ul v-for="(item, index) of whereToGoIconSrcPackage" :key="index">
+        <li style="text-indent: 2px; margin-bottom: 2px; font-size: large">{{ item.name }}</li>
+        <textarea cols="40" rows="5">{{ item }}</textarea>
+      </ul>
+    </div>
   </div>
 </template>
 
