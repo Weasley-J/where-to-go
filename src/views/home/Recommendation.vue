@@ -1,6 +1,7 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
+import { isDebugEnable } from '@/main.js'
 
 const recommendationList = ref({ categoryName: '', categories: [] })
 
@@ -8,6 +9,9 @@ onBeforeMount(async () => {
   const { data } = await axios.get('/api/weasley/aliyun/recommendationList.json')
   const { categoryName, categories } = data
   recommendationList.value = { categoryName, categories }
+  if (isDebugEnable) {
+    console.log('recommendation_list:', recommendationList.value)
+  }
 })
 </script>
 

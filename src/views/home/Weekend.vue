@@ -1,12 +1,16 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
+import { isDebugEnable } from '@/main.js'
 
 const weekendList = ref({ categoryName: '', categories: [] })
 onBeforeMount(async () => {
   const { data } = await axios.get('/api/weasley/aliyun/weekendList.json')
   const { categoryName, categories } = data
   weekendList.value = { categoryName, categories }
+  if (isDebugEnable) {
+    console.log('weekend_list:', weekendList.value)
+  }
 })
 </script>
 

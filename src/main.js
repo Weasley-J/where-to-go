@@ -13,11 +13,10 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 FastClick.attach(document.body)
 
 function isDebugEnabled() {
-  let mode = import.meta.env.MODE
   return !!import.meta.env.VITE_IS_DEBUG_ENABLE
 }
 
-export const { isDebugEnable } = isDebugEnabled()
+export const isDebugEnable = isDebugEnabled()
 
 const app = createApp(App)
 app.config.globalProperties.isDebugEnable = isDebugEnabled()
