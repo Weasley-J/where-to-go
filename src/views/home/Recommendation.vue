@@ -2,25 +2,21 @@
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 
-const recommendationList = ref([])
+const recommendationList = ref({ categoryName: '', categories: [] })
 
 onBeforeMount(async () => {
-  const { data } = await axios.get('/api/weasley/aliyun//recommendationList.json')
-  recommendationList.value = data.map(({ id, title, imgUrl, desc }) => ({
-    id,
-    title,
-    imgUrl,
-    desc
-  }))
+  const { data } = await axios.get('/api/weasley/aliyun/recommendationList.json')
+  const { categoryName, categories } = data
+  recommendationList.value = { categoryName, categories }
 })
 </script>
 
 <template>
   <div>
-    <div class="recommendation-title">💥热销推荐💥</div>
+    <div class="recommendation-title">{{ recommendationList.categoryName }}</div>
     <ul>
       <li
-        v-for="{ id, title, imgUrl, desc } in recommendationList"
+        v-for="{ id, title, imgUrl, desc } in recommendationList.categories"
         :key="id"
         class="recommendation-item border-bottom"
       >
