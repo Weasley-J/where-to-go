@@ -1,29 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
+import axios from 'axios'
 
-const recommendationList = ref([
-  {
-    id: 1,
-    title: '滑雪运动·特色玩法',
-    imgUrl:
-      'https://imgs.qunarzz.com/vs_ceph_b2c_001/9124aede-ccda-4f24-8018-e3deb2c047c6.jpg_180x120x90_af4c3832.jpg',
-    desc: '真纯玩+年轻派💖西岭雪山深度全景1日💖赠景区门票+保险+车费💖畅游映雪广场+日月坪💖休闲度假ღ观云海+可升保姆车'
-  },
-  {
-    id: 2,
-    title: '滑雪运动·特色玩法',
-    imgUrl:
-      'https://imgs.qunarzz.com/vs_ceph_b2c_001/9124aede-ccda-4f24-8018-e3deb2c047c6.jpg_180x120x90_af4c3832.jpg',
-    desc: '真纯玩+年轻派💖西岭雪山深度全景1日💖赠景区门票+保险+车费💖畅游映雪广场+日月坪💖休闲度假ღ观云海+可升保姆车'
-  },
-  {
-    id: 3,
-    title: '滑雪运动·特色玩法',
-    imgUrl:
-      'https://imgs.qunarzz.com/vs_ceph_b2c_001/9124aede-ccda-4f24-8018-e3deb2c047c6.jpg_180x120x90_af4c3832.jpg',
-    desc: '真纯玩+年轻派💖西岭雪山深度全景1日💖赠景区门票+保险+车费💖畅游映雪广场+日月坪💖休闲度假ღ观云海+可升保姆车'
-  }
-])
+const recommendationList = ref([])
+
+onBeforeMount(async () => {
+  const { data } = await axios.get('/api/weasley/aliyun//recommendationList.json')
+  recommendationList.value = data.map(({ id, title, imgUrl, desc }) => ({
+    id,
+    title,
+    imgUrl,
+    desc
+  }))
+})
 </script>
 
 <template>
