@@ -29,11 +29,8 @@ let currentRoute = route.fullPath // 当前路由的完整路径
 const whereToGoIconSrcPackage = ref(
   computed(() => {
     let data = store.state.whereToGoIconPackage
-    if (isDebugEnable && data && data.length > 0) {
-      console.log(
-        `收到路由[${lastRoute}]跳转到路由[${currentRoute}]携带的数据: ${JSON.stringify(data)}`
-      )
-    }
+    if (isDebugEnable && data && data.length > 0)
+      console.log(`收到路由[${lastRoute}]跳转到路由[${currentRoute}]携带的数据: ${data.length} 条`)
     return data
   })
 )
@@ -47,12 +44,16 @@ const data = ref({
     isProduction: isProduction
   }
 })
+
+function gotoHome() {
+  router.push('/')
+}
 </script>
 
 <template>
   <div>
     <div>
-      <h2 class="centered-text">Welcome to {{ data.appInfo.appName }}</h2>
+      <h2 class="centered-text" @click="gotoHome">Welcome to {{ data.appInfo.appName }}</h2>
     </div>
     <p class="border-bottom" style="margin: 10px 0 10px">
       This APP created with <span style="color: red">Vite</span>. Powered by Vue<span
@@ -62,7 +63,7 @@ const data = ref({
     </p>
     <p class="border-bottom">应用 ID: {{ data.appInfo.appId }}</p>
     <p class="border-bottom">运行环境 : {{ data.appInfo.appEnv }}</p>
-    <p class="border-bottom">
+    <p class="border-bottom" style="border-bottom: 1px solid #007aff; padding-bottom: 10px">
       API URL: <a :href="data.appInfo?.apiUrl" target="_blank">{{ data.appInfo.apiUrl }}</a>
     </p>
     <div style="text-align: center; margin-top: 38px; margin-bottom: 38px">
@@ -81,18 +82,50 @@ const data = ref({
 textarea {
   border: 2px solid pink;
   border-radius: 5px;
-  border-spacing: 0; /* 防止单元格之间有间隙 */
-  width: 98%;
-  overflow: hidden; /* 确保圆角不会被单元格的边框影响 */
+  width: 100%;
+  height: 150px;
+  overflow: auto; /* 确保滚动条出现 */
   margin-bottom: 10px;
+  scroll-behavior: smooth; /* 平滑滚动 */
+  padding: 10px;
+  box-sizing: border-box; /* 包含内边距和边框的宽度计算 */
+}
+
+/* 自定义滚动条样式 */
+/* WebKit-based browsers (Chrome, Safari) */
+textarea::-webkit-scrollbar {
+  width: 10px;
+}
+
+textarea::-webkit-scrollbar-track {
+  background: #f0f0f0; /* 滚动条背景 */
+  border-radius: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: pink; /* 滚动条滑块颜色 */
+  border-radius: 5px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: hotpink; /* 鼠标悬停时滑块颜色 */
+}
+
+/* Firefox */
+textarea {
+  scrollbar-width: thin;
+  scrollbar-color: pink #f0f0f0; /* 滚动条颜色 (滑块颜色 滑槽颜色) */
 }
 
 .centered-text {
-  margin-bottom: 10px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   color: #00bcd4;
   text-decoration: none;
   font-size: 24px;
   text-align: center;
+  border-bottom: 1px solid #007aff;
+  cursor: pointer;
 }
 
 .navigation-button {

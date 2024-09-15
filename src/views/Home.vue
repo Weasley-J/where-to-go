@@ -57,7 +57,11 @@ watch(route, () => {
 // 跳转到关于页面：并传递数据，不改变地址栏
 function goToAbout() {
   store.commit('setIconPackage', whereToDoData)
-  router.push('/about') // to
+  router
+    .push('/about') // to [/about]
+    .then(() => {
+      window.scrollTo(0, 0) // 在跳转成功后，滚动到页面顶部
+    })
 }
 </script>
 
@@ -100,6 +104,8 @@ nav {
 
 .navigation-button {
   color: #00bcd4;
+  font-size: 24px;
   text-decoration: none;
+  cursor: pointer;
 }
 </style>
