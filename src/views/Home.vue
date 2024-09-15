@@ -8,13 +8,17 @@ import { useRoute } from 'vue-router'
 import HomeRecommendation from '@/views/home/Recommendation.vue'
 import HomeWeekend from '@/views/home/Weekend.vue'
 import { Navigation, Pagination } from 'swiper/modules'
+import { useStore } from 'vuex'
+import router from '@/router/index.js'
 
 // 定义数据
 const whereToDoData = ref(null)
 const whereToGoIconPackage = ref(null)
 const swiperModules = ref([Pagination, Navigation])
 
+const store = useStore()
 const route = useRoute()
+
 const fetchAllData = async () => {
   let dept = '上海'
   let { data } = await axios.get(
@@ -49,6 +53,12 @@ watch(route, () => {
     console.log('路由变化重新加载: ', JSON.stringify(whereToDoData.value))
   }
 })
+
+// 跳转到关于页面：并传递数据，不改变地址栏
+function goToAbout() {
+  store.commit('setIconPackage', whereToDoData)
+  router.push('/about') // to
+}
 </script>
 
 <template>
@@ -62,7 +72,7 @@ watch(route, () => {
       <button class="fetch-data-btn" @click="fetchAllData">刷新数据</button>
     </div>
     <nav>
-      <router-link class="navigation-button" to="/about">关于</router-link>
+      <span class="navigation-button" @click="goToAbout">关于</span>
     </nav>
   </div>
 </template>
