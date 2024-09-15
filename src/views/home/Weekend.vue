@@ -2,26 +2,22 @@
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 
-const weekendList = ref([])
+const weekendList = ref({ categoryName: '', categories: [] })
 onBeforeMount(async () => {
   const { data } = await axios.get('/api/weasley/aliyun/weekendList.json')
-  weekendList.value = data.map(({ id, title, imgUrl, desc }) => ({
-    id,
-    title,
-    imgUrl,
-    desc
-  }))
+  const { categoryName, categories } = data
+  weekendList.value = { categoryName, categories }
 })
 </script>
 
 <template>
   <div>
     <div class="recommendation-title">
-      <span class="recommendation-title-text">💖Where to go this weekend💖</span>
+      <span class="recommendation-title-text">{{ weekendList.categoryName }}</span>
     </div>
     <ul>
       <li
-        v-for="{ id, title, imgUrl, desc } in weekendList"
+        v-for="{ id, title, imgUrl, desc } in weekendList.categories"
         :key="id"
         class="recommendation-item border-bottom"
       >
