@@ -1,29 +1,17 @@
 <script setup>
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
+import axios from 'axios'
 
-const recommendationList = ref([
-  {
-    id: 1,
-    title: '子游纯玩 0 购物',
-    imgUrl:
-      'https://imgs.qunarzz.com/vs_ceph_b2c_001/d4132120-a3f1-4a30-a144-46905c0f27d6.jpg_480x320x90_6bb2871e.jpg',
-    desc: '🔥暑期甄选🔥亲子游丨中旅自营丨纯玩0购物丨张家界3日自驾游（祈福天门山+玻璃栈道+森林公园+天子山+赠晚会）高档酒店'
-  },
-  {
-    id: 2,
-    title: '漂流安吉',
-    imgUrl:
-      'https://imgs.qunarzz.com/vs_ceph_b2c_001/0a2b1db0-fc30-472f-9c1e-28a600007ea8.jpg_180x120x90_3c33ab15.jpg',
-    desc: '将军关漂流/浙北漂流/浙北大峡谷自驾2日游 宿如家丽岚睿柏·云酒店'
-  },
-  {
-    id: 3,
-    title: '小众秘境',
-    imgUrl:
-      'https://imgs.qunarzz.com/vs_ceph_b2c_001/82560ce7-880b-4224-ad28-d4380ce1e75d.jpg_180x120x90_221241db.jpg',
-    desc: '小众秘境|原生态线路|格里沙漠三日徒步35KM|保障车|牧民领队|沙漠烧烤'
-  }
-])
+const weekendList = ref([])
+onBeforeMount(async () => {
+  const { data } = await axios.get('/api/weasley/aliyun/weekendList.json')
+  weekendList.value = data.map(({ id, title, imgUrl, desc }) => ({
+    id,
+    title,
+    imgUrl,
+    desc
+  }))
+})
 </script>
 
 <template>
@@ -33,7 +21,7 @@ const recommendationList = ref([
     </div>
     <ul>
       <li
-        v-for="({ id, title, imgUrl, desc }, index) in recommendationList"
+        v-for="({ id, title, imgUrl, desc }, index) in weekendList"
         :key="id"
         class="recommendation-item border-bottom"
       >
