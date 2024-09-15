@@ -20,7 +20,7 @@ onBeforeMount(async () => {
     <div class="recommendation-title">💥热销推荐💥</div>
     <ul>
       <li
-        v-for="({ id, title, imgUrl, desc }) in recommendationList"
+        v-for="{ id, title, imgUrl, desc } in recommendationList"
         :key="id"
         class="recommendation-item border-bottom"
       >

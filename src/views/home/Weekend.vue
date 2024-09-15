@@ -21,7 +21,7 @@ onBeforeMount(async () => {
     </div>
     <ul>
       <li
-        v-for="({ id, title, imgUrl, desc }) in weekendList"
+        v-for="{ id, title, imgUrl, desc } in weekendList"
         :key="id"
         class="recommendation-item border-bottom"
       >
