@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const { isDebugEnable, hosts } = APIs(mode)
-  const { apiUrlZtDujia, apiUrlTouchDujia } = hosts
+  const { apiUrlZtDujia, apiUrlTouchDujia, apiUrlAliyun } = hosts
   return {
     define: {},
     plugins: [vue(), vueDevTools()],
@@ -29,9 +29,7 @@ export default defineConfig(({ command, mode }) => {
           rewrite: (path) => path.replace(/^\/api\/touch/, '')
         },
         '/api/weasley/aliyun': {
-          target: decodeBase64(
-            'aHR0cHM6Ly93ZWFzbGV5Lm9zcy1jbi1zaGFuZ2hhaS5hbGl5dW5jcy5jb20vT3RoZXJzL3doZXJlLXRvLWdv'
-          ),
+          target: apiUrlAliyun,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/weasley\/aliyun/, '')
         }
@@ -68,6 +66,7 @@ const APIs = (mode) => {
   const isDebugEnable = !!env.VITE_IS_DEBUG_ENABLE
   let apiUrlZtDujia = env.APP_API_URL_ZT_DUJIA_QUNAR
   let apiUrlTouchDujia = env.APP_API_URL_TOUCH_DUJIA_QUNAR
+  let apiUrlAliyun = env.APP_API_URL_ALIYUN_WEASLEY
   let encodeByBase64 = false
 
   if (isBase64(apiUrlZtDujia)) {
@@ -78,15 +77,21 @@ const APIs = (mode) => {
     encodeByBase64 = true
     apiUrlTouchDujia = decodeBase64(apiUrlTouchDujia)
   }
+  if (isBase64(apiUrlAliyun)) {
+    encodeByBase64 = true
+    apiUrlAliyun = decodeBase64(apiUrlAliyun)
+  }
+
   if (isDebugEnable && encodeByBase64) {
-    console.log(`Parsed APIs: ${apiUrlZtDujia}, ${apiUrlTouchDujia}\n`)
+    console.log(`Parsed APIs: ${apiUrlZtDujia}, ${apiUrlTouchDujia}, ${apiUrlAliyun}\n`)
   }
 
   return {
     isDebugEnable,
     hosts: {
-      apiUrlZtDujia: apiUrlZtDujia,
-      apiUrlTouchDujia: apiUrlTouchDujia
+      apiUrlZtDujia,
+      apiUrlTouchDujia,
+      apiUrlAliyun
     }
   }
 }
