@@ -23,6 +23,11 @@ const router = createRouter({
       path: '/sayHi',
       name: 'SayHello',
       component: () => import('../components/SayHello.vue')
+    },
+    {
+      path: '/city',
+      name: 'City',
+      component: () => import('../views/City.vue')
     }
   ]
 })

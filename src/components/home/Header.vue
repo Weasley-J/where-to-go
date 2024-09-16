@@ -1,18 +1,32 @@
 <script setup>
+import router from '@/router/index.js'
+import store from '@/store.js'
+
 const props = defineProps({
   city: {
     type: Object,
     default: () => ({ name: null, type: null })
-  }
+  },
+  whereToGoData: null
 })
+
+function gotoCity() {
+  store.commit('setWhereToGoData', props.whereToGoData)
+  router.push('/city').then(() => {
+    window.scrollTo(0, 0)
+  })
+}
 </script>
+
 <template>
   <div class="header">
     <div class="header-left">
       <div class="iconfont back-icon">&#xe624;</div>
     </div>
     <div class="header-input"><span class="iconfont">&#xe632;</span>输入城市/景点/游玩主题</div>
-    <div class="header-right arrow-icon">{{ city.name }}<span class="iconfont">&#xe62d;</span></div>
+    <div class="header-right arrow-icon" @click="gotoCity">
+      {{ city.name }}<span class="iconfont">&#xe62d;</span>
+    </div>
   </div>
 </template>
 
