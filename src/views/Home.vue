@@ -1,18 +1,18 @@
 <script setup>
-import HomeHeader from '@/views/home/Header.vue'
-import HomeSwiper from '@/views/home/HomeSwiper.vue'
-import HomeIcons from '@/views/home/Icons.vue'
+import HomeHeader from '@/components/home/Header.vue'
+import HomeSwiper from '@/components/home/HomeSwiper.vue'
+import HomeIcons from '@/components/home/Icons.vue'
 import { onMounted, ref, watch } from 'vue'
 import axios from 'axios'
 import { useRoute } from 'vue-router'
-import HomeRecommendation from '@/views/home/Recommendation.vue'
-import HomeWeekend from '@/views/home/Weekend.vue'
+import HomeRecommendation from '@/components/home/Recommendation.vue'
+import HomeWeekend from '@/components/home/Weekend.vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import { useStore } from 'vuex'
 import router from '@/router/index.js'
 
 // 定义数据
-const whereToDoData = ref(null)
+const whereToGoData = ref(null)
 const city = ref({ name: null, type: null })
 const whereToGoIconPackage = ref(null)
 const swiperModules = ref([Pagination, Navigation])
@@ -28,7 +28,7 @@ const fetchAllData = async () => {
     const responseData = data.data
     if (responseData && responseData.length > 0) {
       const { type, name } = responseData[0]
-      whereToDoData.value = responseData
+      whereToGoData.value = responseData
       city.value = { type, name }
       whereToGoIconPackage.value = fetchFullIcons(responseData)
     } else {
@@ -52,22 +52,22 @@ const fetchFullIcons = (whereToDoData) => {
  */
 onMounted(() => {
   fetchAllData()
-  if (whereToDoData.value && whereToDoData.value.length > 0) {
-    console.log('进入页面时加载: ', JSON.stringify(whereToDoData.value))
+  if (whereToGoData.value && whereToGoData.value.length > 0) {
+    console.log('进入页面时加载: ', JSON.stringify(whereToGoData.value))
   }
 })
 
 /** 监听路由变化-重载数据 */
 watch(route, () => {
   fetchAllData()
-  if (whereToDoData.value && whereToDoData.value.length > 0) {
-    console.log('路由变化重新加载: ', JSON.stringify(whereToDoData.value))
+  if (whereToGoData.value && whereToGoData.value.length > 0) {
+    console.log('路由变化重新加载: ', JSON.stringify(whereToGoData.value))
   }
 })
 
 // 跳转到关于页面：并传递数据，不改变地址栏
 function goToAbout() {
-  store.commit('setIconPackage', whereToDoData)
+  store.commit('setIconPackage', whereToGoData)
   store.commit('setShowJSONData', false)
   router
     .push('/about') // to [/about]
@@ -79,7 +79,7 @@ function goToAbout() {
 
 <template>
   <div>
-    <home-header :city="city" />
+    <home-header :city="city" :where-to-go-data="whereToGoData" />
     <home-swiper />
     <home-icons :swiper-modules="swiperModules" :where-to-go-icon-package="whereToGoIconPackage" />
     <home-recommendation />
