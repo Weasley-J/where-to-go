@@ -2,11 +2,10 @@
 import CityHeader from '@/components/city/Header.vue'
 import CitySearch from '@/components/city/Search.vue'
 import CityList from '@/components/city/List.vue'
-import { computed, onBeforeMount, onMounted, ref } from 'vue'
+import { computed, onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/main.js'
 import { useStore } from 'vuex'
-import router from '@/router/index.js'
 
 const store = useStore()
 const cityArgs = {
@@ -41,12 +40,6 @@ onBeforeMount(async () => {
   if (isDebugEnable) {
     console.log('Domestic: ', cityModules.value.domestic, '\nAbroad: ', cityModules.value.abroad)
   }
-})
-onMounted(() => {
-  store.commit('setWhereToGoData', store.state.whereToGoData)
-  router.push('/city').then(() => {
-    window.scrollTo(0, 0)
-  })
 })
 </script>
 
