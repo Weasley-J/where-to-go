@@ -13,6 +13,7 @@ import router from '@/router/index.js'
 
 // 定义数据
 const whereToDoData = ref(null)
+const city = ref({ name: null, type: null })
 const whereToGoIconPackage = ref(null)
 const swiperModules = ref([Pagination, Navigation])
 
@@ -20,12 +21,22 @@ const store = useStore()
 const route = useRoute()
 
 const fetchAllData = async () => {
-  let dept = '上海'
-  let { data } = await axios.get(
-    '/api/touch/' + `golfz/free/travelClass?query=all&dep=${dept}&type=free`
-  )
-  whereToDoData.value = data.data
-  whereToGoIconPackage.value = fetchFullIcons(whereToDoData.value)
+  try {
+    const query = 'all'
+    const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free`
+    const { data } = await axios.get(url)
+    const responseData = data.data
+    if (responseData && responseData.length > 0) {
+      const { type, name } = responseData[0]
+      whereToDoData.value = responseData
+      city.value = { type, name }
+      whereToGoIconPackage.value = fetchFullIcons(responseData)
+    } else {
+      console.error('No data found in response')
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error)
+  }
 }
 const fetchFullIcons = (whereToDoData) => {
   let fullIconPack = []
@@ -68,7 +79,7 @@ function goToAbout() {
 
 <template>
   <div>
-    <home-header />
+    <home-header :city="city" />
     <home-swiper />
     <home-icons :swiper-modules="swiperModules" :where-to-go-icon-package="whereToGoIconPackage" />
     <home-recommendation />
