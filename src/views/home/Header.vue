@@ -1,18 +1,25 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  city: {
+    type: Object,
+    default: () => ({ name: null, type: null })
+  }
+})
+</script>
 <template>
   <div class="header">
     <div class="header-left">
       <div class="iconfont back-icon">&#xe624;</div>
     </div>
     <div class="header-input"><span class="iconfont">&#xe632;</span>输入城市/景点/游玩主题</div>
-    <div class="header-right arrow-icon">城市<span class="iconfont">&#xe62d;</span></div>
+    <div class="header-right arrow-icon">{{ city.name }}<span class="iconfont">&#xe62d;</span></div>
   </div>
 </template>
 
 <style lang="stylus" scoped>
 .header
   display flex
-  line-height .95rem
+  line-height 2rem
   background #00bcd4
   color #fff
 
@@ -29,19 +36,18 @@
 
   .header-input
     flex: 1
-    height: .64rem
-    line-height: .64rem
-    text-align center;
-    margin-top: .12rem
+    height: 1.28rem
+    line-height: 1.28rem
+    margin-top: 0.48rem
     margin-left: .2rem
-    padding-left: .2rem
+    border-radius: .18rem
     background: #fff
-    border-radius: .1rem
     color: #ccc
+    text-align center
 
   .header-right
     min-width: 1.04rem
-    padding: 0 .1rem
+    padding: 0.1rem
     float: right
     text-align: center
     color: #fff
