@@ -64,34 +64,32 @@ function decodeBase64(encodedStr) {
 const APIs = (mode) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDebugEnable = !!env.VITE_IS_DEBUG_ENABLE
-  let apiUrlZtDujia = env.APP_API_URL_ZT_DUJIA_QUNAR
-  let apiUrlTouchDujia = env.APP_API_URL_TOUCH_DUJIA_QUNAR
-  let apiUrlAliyun = env.APP_API_URL_ALIYUN_WEASLEY
+
+  // 创建一个包含 API URL 的数组
+  const apiUrls = [
+    { key: 'apiUrlZtDujia', url: env.APP_API_URL_ZT_DUJIA_QUNAR },
+    { key: 'apiUrlTouchDujia', url: env.APP_API_URL_TOUCH_DUJIA_QUNAR },
+    { key: 'apiUrlAliyun', url: env.APP_API_URL_ALIYUN_WEASLEY }
+  ]
+
   let encodeByBase64 = false
 
-  if (isBase64(apiUrlZtDujia)) {
-    encodeByBase64 = true
-    apiUrlZtDujia = decodeBase64(apiUrlZtDujia)
-  }
-  if (isBase64(apiUrlTouchDujia)) {
-    encodeByBase64 = true
-    apiUrlTouchDujia = decodeBase64(apiUrlTouchDujia)
-  }
-  if (isBase64(apiUrlAliyun)) {
-    encodeByBase64 = true
-    apiUrlAliyun = decodeBase64(apiUrlAliyun)
-  }
+  // 遍历 API URL，解码 Base64 编码的 URL
+  apiUrls.forEach((api) => {
+    if (isBase64(api.url)) {
+      encodeByBase64 = true
+      api.url = decodeBase64(api.url)
+    }
+  })
 
+  // 如果调试模式启用且有 URL 被解码，则打印日志
   if (isDebugEnable && encodeByBase64) {
-    console.log(`Parsed APIs: ${apiUrlZtDujia}, ${apiUrlTouchDujia}, ${apiUrlAliyun}\n`)
+    console.log(`Parsed APIs: ${apiUrls.map((api) => api.url).join(', ')}\n`)
   }
 
+  // 返回结果
   return {
     isDebugEnable,
-    hosts: {
-      apiUrlZtDujia,
-      apiUrlTouchDujia,
-      apiUrlAliyun
-    }
+    hosts: Object.fromEntries(apiUrls.map((api) => [api.key, api.url]))
   }
 }
