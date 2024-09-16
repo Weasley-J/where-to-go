@@ -6,7 +6,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  const { isDebugEnable, hosts } = APIs(mode)
+  const { hosts } = APIs(mode)
   const { apiUrlZtDujia, apiUrlTouchDujia, apiUrlAliyun } = hosts
   return {
     define: {},
