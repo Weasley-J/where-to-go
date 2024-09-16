@@ -11,7 +11,7 @@ const props = defineProps({
 })
 
 function gotoCity() {
-  store.commit('setWhereToGoData', props.whereToGoData)
+  store.commit('setIconPackage', props.whereToGoData)
   router.push('/city').then(() => {
     window.scrollTo(0, 0)
   })
