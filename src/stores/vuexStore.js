@@ -1,6 +1,6 @@
 import { createStore } from 'vuex'
 
-const store = createStore({
+const vuexStore = createStore({
   state: {
     showJSONData: true,
     cityData: [],
@@ -19,4 +19,4 @@ const store = createStore({
   }
 })
 
-export default store
+export default vuexStore
