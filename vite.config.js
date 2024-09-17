@@ -8,6 +8,25 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 export default defineConfig(({ command, mode }) => {
   const { hosts } = APIs(mode)
   const { apiUrlZtDujia, apiUrlTouchDujia, apiUrlAliyun } = hosts
+  // 配置代理
+  const proxyConfig = {
+    '/api/zt': {
+      target: apiUrlZtDujia,
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api\/zt/, '')
+    },
+    '/api/touch': {
+      target: apiUrlTouchDujia,
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api\/touch/, '')
+    },
+    '/api/weasley/aliyun': {
+      target: apiUrlAliyun,
+      changeOrigin: true,
+      rewrite: (path) => path.replace(/^\/api\/weasley\/aliyun/, '')
+    }
+  }
+
   return {
     define: {},
     plugins: [vue(), vueDevTools()],
@@ -17,23 +36,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
     server: {
-      proxy: {
-        '/api/zt': {
-          target: apiUrlZtDujia,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/zt/, '')
-        },
-        '/api/touch': {
-          target: apiUrlTouchDujia,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/touch/, '')
-        },
-        '/api/weasley/aliyun': {
-          target: apiUrlAliyun,
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api\/weasley\/aliyun/, '')
-        }
-      }
+      proxy: proxyConfig
     }
   }
 })

@@ -1,6 +1,9 @@
 <script setup>
+import { onBeforeMount, ref, watch } from 'vue'
+import { isDebugEnable } from '@/main.js'
+
 const props = defineProps({
-  alphabetList: {
+  defaultCityLetters: {
     type: Array,
     default: () => {
       const result = []
@@ -9,8 +12,28 @@ const props = defineProps({
       }
       return result
     }
+  },
+  cityModules: {
+    type: Object,
+    default: () => ({ domestic: {}, abroad: {} })
   }
 })
+
+const cityLetters = ref(null)
+
+onBeforeMount(() => {
+  let keys = Object.keys(props.cityModules.domestic || {})
+  // 排序: A - Z
+  cityLetters.value = keys.sort((a, b) => a.localeCompare(b))
+  if (isDebugEnable) console.log('CityLetters: ', cityLetters.value)
+})
+
+watch(
+  () => props.cityModules,
+  (value, oldValue, onCleanup) => {
+    cityLetters.value = Object.keys(value.domestic || {})
+  }
+)
 
 function clickAlphabet(alphabet) {
   alert(`You clicked: ${alphabet}`)
@@ -20,7 +43,7 @@ function clickAlphabet(alphabet) {
 <template>
   <div class="container">
     <div class="list">
-      <ul v-for="(alphabet, index) in alphabetList" :key="index">
+      <ul v-for="(alphabet, index) in cityLetters" :key="index">
         <li class="item" @click="clickAlphabet(alphabet)">{{ alphabet }}</li>
       </ul>
     </div>
