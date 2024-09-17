@@ -3,7 +3,7 @@ import CityHeader from '@/components/city/Header.vue'
 import CitySearch from '@/components/city/Search.vue'
 import CityList from '@/components/city/List.vue'
 import CityAlphabet from '@/components/city/Alphabet.vue'
-import { computed, onBeforeMount, ref } from 'vue'
+import { computed, onBeforeMount, provide, ref } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/main.js'
 import { useStore } from 'vuex'
@@ -42,6 +42,9 @@ onBeforeMount(async () => {
     console.log('Domestic: ', cityModules.value.domestic, '\nAbroad: ', cityModules.value.abroad)
   }
 })
+
+// 向子组件提供城市模块数据
+provide('cityModules', cityModules)
 </script>
 
 <template>
