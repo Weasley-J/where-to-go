@@ -2,6 +2,7 @@
 import CityHeader from '@/components/city/Header.vue'
 import CitySearch from '@/components/city/Search.vue'
 import CityList from '@/components/city/List.vue'
+import CityAlphabet from '@/components/city/Alphabet.vue'
 import { computed, onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/main.js'
@@ -48,6 +49,7 @@ onBeforeMount(async () => {
     <city-header />
     <city-search />
     <city-list :city-modules="cityModules" :current-cities="currentCities" />
+    <city-alphabet />
   </div>
 </template>
 

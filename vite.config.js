@@ -41,11 +41,9 @@ export default defineConfig(({ command, mode }) => {
 // Helper functions
 function isBase64(str) {
   const base64Regex = /^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)?$/
-
   if (!base64Regex.test(str)) {
     return false
   }
-
   try {
     atob(str)
     return true
@@ -54,8 +52,42 @@ function isBase64(str) {
   }
 }
 
+function encodeBase64(str, recursiveCount = 1, currentCount = 0) {
+  // 递归的终止条件：达到指定递归次数
+  if (currentCount >= recursiveCount) {
+    return str
+  }
+  // 使用 TextEncoder 编码为 UTF-8，再进行 Base64 编码
+  const utf8Bytes = new TextEncoder().encode(str)
+  const base64String = btoa(String.fromCharCode(...utf8Bytes))
+  return encodeBase64(base64String, recursiveCount, currentCount + 1)
+}
+
 function decodeBase64(encodedStr) {
-  return atob(encodedStr)
+  let decode = encodedStr
+  if (isBase64(decode)) {
+    decode = atob(decode) // Base64 解码为字符
+    decode = utf8Decode(decode)
+    return decodeBase64(decode)
+  } else {
+    return decode
+  }
+}
+
+// 将 Base64 解码后的字符转换为 UTF-8 字符串
+function utf8Decode(utf8String) {
+  const bytes = new Uint8Array(utf8String.split('').map((char) => char.charCodeAt(0)))
+  return new TextDecoder().decode(bytes)
+}
+
+/**
+ * This function is used to convert a string or boolean value to boolean.
+ */
+function isTrue(value) {
+  if (typeof value === 'string') {
+    return value.toLowerCase() === 'true' || value.toLowerCase() === '1'
+  }
+  return Boolean(value).valueOf()
 }
 
 /**
@@ -63,7 +95,7 @@ function decodeBase64(encodedStr) {
  */
 const APIs = (mode) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const isDebugEnable = !!env.VITE_IS_DEBUG_ENABLE
+  const isDebugEnable = isTrue(env.VITE_IS_DEBUG_ENABLE)
 
   // 创建一个包含 API URL 的数组
   const apiUrls = [
