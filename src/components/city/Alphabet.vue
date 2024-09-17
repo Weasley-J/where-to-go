@@ -15,23 +15,28 @@ const props = defineProps({
   },
   cityModules: {
     type: Object,
-    default: () => ({ domestic: {}, abroad: {} })
+    default: () => ({
+      domestic: null,
+      abroad: null
+    })
   }
 })
 
-const cityLetters = ref(null)
+const cityLetters = ref([])
 
 onBeforeMount(() => {
-  let keys = Object.keys(props.cityModules.domestic || {})
   // 排序: A - Z
-  cityLetters.value = keys.sort((a, b) => a.localeCompare(b))
-  if (isDebugEnable) console.log('CityLetters: ', cityLetters.value)
+  cityLetters.value = Object.keys(props.cityModules.domestic || {}).sort((a, b) =>
+    a.localeCompare(b)
+  )
 })
 
+// 监听 cityModules 变化
 watch(
   () => props.cityModules,
   (value, oldValue, onCleanup) => {
     cityLetters.value = Object.keys(value.domestic || {})
+    if (isDebugEnable) console.log('CityLetters: ', cityLetters.value)
   }
 )
 
