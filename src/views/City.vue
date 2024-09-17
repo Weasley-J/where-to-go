@@ -49,7 +49,7 @@ onBeforeMount(async () => {
     <city-header />
     <city-search />
     <city-list :city-modules="cityModules" :current-cities="currentCities" />
-    <city-alphabet />
+    <city-alphabet :city-modules="cityModules" />
   </div>
 </template>
 
