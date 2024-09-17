@@ -7,14 +7,14 @@ const store = createStore({
     whereToGoIconPackage: null
   },
   mutations: {
-    setShowJSONData(state, showJSON) {
+    setShowJSON(state, showJSON) {
       state.showJSONData = showJSON
     },
     setCityData(state, cityData) {
       state.cityData = cityData
     },
-    setIconPackage(state, iconPackage) {
-      state.whereToGoIconPackage = iconPackage
+    setIconPackages(state, iconPackages) {
+      state.whereToGoIconPackage = iconPackages
     }
   }
 })
