@@ -5,7 +5,7 @@ import { isDebugEnable } from '@/debugEnable.js'
 
 // 定义属性
 const props = defineProps({
-  whereToGoIconPackage: {
+  whereToGoHeaderIcons: {
     type: Array,
     default: () => []
   },
@@ -47,9 +47,9 @@ watch(
   { immediate: true }
 )
 
-// 监听 whereToGoIconPackage 的变化
+// 监听 whereToGoHeaderIcons 的变化
 watch(
-  () => props.whereToGoIconPackage,
+  () => props.whereToGoHeaderIcons,
   (newValue) => {
     if (newValue && newValue.length > 0) {
       // console.log('where-to-go-icon-package 已更新:', newValue)
@@ -61,11 +61,11 @@ watch(
 /**
  * 合并 where-to-go 的两个 icons 数组, 处理分页逻辑
  */
-const mergeIconToPaginationIcons = async (icons, whereToGoIconPackage) => {
+const mergeIconToPaginationIcons = async (icons, whereToGoHeaderIcons) => {
   const _icons = [...icons.value] // 解构 icons.value 数组
   const lastOne = _icons[_icons.length - 1]
-  // 解构 whereToGoIconPackage 的元素对象属性
-  const updatedIcons = whereToGoIconPackage.map(({ name, icon }, index) => ({
+  // 解构 whereToGoHeaderIcons 的元素对象属性
+  const updatedIcons = whereToGoHeaderIcons.map(({ name, icon }, index) => ({
     id: lastOne.id + index + 1, // 动态生成新的 id
     desc: name,
     imgUrl: icon
@@ -98,7 +98,7 @@ onBeforeMount(async () => {
       desc: title,
       imgUrl: image
     }))
-    const paginatedIcons = await mergeIconToPaginationIcons(icons, props.whereToGoIconPackage)
+    const paginatedIcons = await mergeIconToPaginationIcons(icons, props.whereToGoHeaderIcons)
     if (isDebugEnable) {
       console.log('paginated_icons:', paginatedIcons)
     }

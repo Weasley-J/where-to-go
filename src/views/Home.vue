@@ -14,7 +14,7 @@ import router from '@/router/index.js'
 // 定义数据
 const whereToGoData = ref(null)
 const city = ref({ name: null, type: null })
-const whereToGoIconPackage = ref(null)
+const whereToGoHeaderIcons = ref(null)
 const swiperModules = ref([Pagination, Navigation])
 
 const store = useStore()
@@ -30,7 +30,7 @@ const fetchAllData = async () => {
       const { type, name } = responseData[0]
       whereToGoData.value = responseData
       city.value = { type, name }
-      whereToGoIconPackage.value = fetchFullIcons(responseData)
+      whereToGoHeaderIcons.value = fetchFullIcons(responseData)
     } else {
       console.error('No data found in response')
     }
@@ -81,7 +81,7 @@ function goToAbout() {
   <div>
     <home-header :city="city" :where-to-go-data="whereToGoData" />
     <home-swiper />
-    <home-icons :swiper-modules="swiperModules" :where-to-go-icon-package="whereToGoIconPackage" />
+    <home-icons :swiper-modules="swiperModules" :where-to-go-header-icons="whereToGoHeaderIcons" />
     <home-recommendation />
     <home-weekend />
     <div class="fetch-home-data">

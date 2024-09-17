@@ -4,7 +4,7 @@ const store = createStore({
   state: {
     showJSONData: true,
     cityData: [],
-    whereToGoIconPackage: null
+    whereToGoHeaderIcons: null
   },
   mutations: {
     setShowJSON(state, showJSON) {
@@ -14,7 +14,7 @@ const store = createStore({
       state.cityData = cityData
     },
     setIconPackages(state, iconPackages) {
-      state.whereToGoIconPackage = iconPackages
+      state.whereToGoHeaderIcons = iconPackages
     }
   }
 })
