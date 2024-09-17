@@ -18,7 +18,7 @@ const cityArgs = {
 const cityModules = ref({ domestic: null, abroad: null })
 const currentCities = computed(() => {
   // 使用可选链避免 props.whereToGoData 为空时报错
-  let _currentCities = (store.state.whereToGoIconPackage || [])
+  let _currentCities = (store.state.whereToGoHeaderIcons || [])
     .filter(({ type }) => type === 'jiangzhehuwan') // 只保留 type 为 'jiangzhehuwan' 的项
     .flatMap(({ placeList }) =>
       placeList.map(({ sightId, placeName, imgUrl }) => ({

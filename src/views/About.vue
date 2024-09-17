@@ -27,7 +27,7 @@ let lastRoute = router.options.history.state.back // 上一个路由的完整路
 let currentRoute = route.fullPath // 当前路由的完整路径
 // 路由变化 - 更新数据
 const whereToGoIconSrcPackage = computed(() => {
-  let data = store.state.whereToGoIconPackage
+  let data = store.state.whereToGoHeaderIcons
   if (isDebugEnable && data && data.length > 0)
     console.log(`收到路由[${lastRoute}]跳转到路由[${currentRoute}]携带的数据: ${data.length} 条`)
   return data
