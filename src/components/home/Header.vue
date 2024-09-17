@@ -1,6 +1,6 @@
 <script setup>
 import router from '@/router/index.js'
-import store from '@/stores/vuexStore.js'
+import vuexStore from '@/stores/vuexStore.js'
 
 const props = defineProps({
   city: {
@@ -11,7 +11,7 @@ const props = defineProps({
 })
 
 function gotoCity() {
-  store.commit('setIconPackages', props.whereToGoData)
+  vuexStore.commit('setIconPackages', props.whereToGoData)
   router.push('/city').then(() => {
     window.scrollTo(0, 0)
   })

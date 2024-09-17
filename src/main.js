@@ -7,7 +7,7 @@ import 'swiper/css'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
-import store from './stores/vuexStore.js'
+import vuexStore from './stores/vuexStore.js'
 
 import { FastClick } from 'wy-fastclick'
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -22,7 +22,7 @@ app.component('Swiper', Swiper)
 app.component('SwiperSlide', SwiperSlide)
 
 app.use(router)
-app.use(store)
+app.use(vuexStore)
 app.use(pinia)
 
 app.mount('#app')
