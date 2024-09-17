@@ -2,6 +2,9 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useStore } from 'vuex'
 import BetterScroll from 'better-scroll'
+import eventBus from '@/stores/eventBus.js'
+import { isDebugEnable } from '@/debugEnable.js'
+import { usePiniaStore } from '@/stores/usePiniaStore.js'
 
 const props = defineProps({
   cityModules: {
@@ -15,8 +18,16 @@ const props = defineProps({
 })
 
 const store = useStore()
+const piniaStore = usePiniaStore() // 获取 pinia store
 const wrapper = ref(null)
+const letterElementsRefs = ref([]) // 创建一个数组来存储每个 item 的 DOM 元素引用
 let scroll = null
+
+// 当前城市字母, 从 piniaStore 中获取
+const cityLetter = computed(() => {
+  return piniaStore.cityLetter || ''
+})
+const currentCityLetter = ref('') // 当前城市字母, 从 eventBus 获取
 const provinceList = computed(() => {
   const domestic = props.cityModules.domestic || {} // 确保 domestic 为对象
   return Object.entries(domestic)
@@ -34,22 +45,16 @@ const provinceList = computed(() => {
     .sort((a, b) => a.name.localeCompare(b.name))
 })
 
-watch(
-  () => props.currentCities,
-  (value, oldValue, onCleanup) => {
-    if (value && scroll) {
-      scroll.refresh()
-    }
-  }
-)
-
 onMounted(() => {
   scroll = new BetterScroll(wrapper.value, {
     scrollY: true,
     click: true
   })
-  // 如果内容可能是动态加载的，可以监听数据变化
-  // 在数据更新后重新刷新 BetterScroll
+  /**
+   * 如果内容可能是动态加载的，可以监听数据变化
+   * 比如监听 props.currentCities 变化，
+   * 在数据更新后重新刷新后调用 scroll.refresh() 刷新 BetterScroll
+   */
   setTimeout(() => {
     scroll.refresh() // 确保内容更新后 BetterScroll 刷新
   }, 500)
@@ -59,6 +64,46 @@ onBeforeUnmount(() => {
     scroll.destroy()
   }
 })
+
+// 获取 pinia store 消息
+watch(
+  () => piniaStore.cityLetter,
+  (newCityLetter, oldValue) => {
+    if (isDebugEnable) {
+      console.log('获取 pinia store 消息: ', newCityLetter)
+    }
+    if (newCityLetter) {
+      let scrollElement = letterElementsRefs.value[newCityLetter] // 获取当前城市字母对应的元素
+      if (isDebugEnable) console.log('Scrolling to Element:\n', scrollElement)
+      // 滚动到元素
+      if (scrollElement) {
+        // scrollElement.scrollIntoView({ behavior: 'smooth' })
+        scroll.scrollToElement(scrollElement)
+      }
+    }
+  }
+)
+
+watch(
+  () => props.currentCities,
+  (value, oldValue, onCleanup) => {
+    if (value && scroll) {
+      scroll.refresh()
+    }
+  }
+)
+
+watch(
+  () => eventBus.currentCityLetter,
+  (value, oldValue, onCleanup) => {
+    if (value) {
+      currentCityLetter.value = value
+      if (value && isDebugEnable) {
+        console.log(`Current city letter changed (eventBus): ${value}`)
+      }
+    }
+  }
+)
 </script>
 
 <template>
@@ -88,7 +133,12 @@ onBeforeUnmount(() => {
           </div>
         </div>
       </div>
-      <div v-for="(values, key) in cityModules.domestic" :key="key" class="area">
+      <div
+        v-for="(values, key) in cityModules.domestic"
+        :key="key"
+        :ref="(el) => (letterElementsRefs[key] = el)"
+        class="area"
+      >
         <div class="title border-topbottom">{{ key }}</div>
         <div class="item-list">
           <ul v-for="({ name, pinyin }, index) in values" :key="index">

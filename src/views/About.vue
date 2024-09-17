@@ -1,8 +1,8 @@
 <script setup>
 import { computed, ref, version as vueVersion } from 'vue'
 import { useStore } from 'vuex'
-import { isDebugEnable } from '@/main.js'
 import { useRoute, useRouter } from 'vue-router'
+import { isDebugEnable } from '@/debugEnable.js'
 
 let viteAppName = import.meta.env.VITE_APP_NAME
 let viteAppId = import.meta.env.VITE_APP_ID

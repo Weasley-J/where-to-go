@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import axios from 'axios'
-import { isDebugEnable } from '@/main.js'
+import { isDebugEnable } from '@/debugEnable.js'
 
 // 定义属性
 const props = defineProps({
