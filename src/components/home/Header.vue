@@ -1,6 +1,6 @@
 <script setup>
 import router from '@/router/index.js'
-import store from '@/store.js'
+import store from '@/stores/vuexStore.js'
 
 const props = defineProps({
   city: {
