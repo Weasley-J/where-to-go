@@ -15,7 +15,7 @@ import { createPinia } from 'pinia'
 
 FastClick.attach(document.body)
 
-const pinia = createPinia()
+const piniaStore = createPinia()
 const app = createApp(App)
 
 app.component('Swiper', Swiper)
@@ -23,6 +23,6 @@ app.component('SwiperSlide', SwiperSlide)
 
 app.use(router)
 app.use(vuexStore)
-app.use(pinia)
+app.use(piniaStore)
 
 app.mount('#app')
