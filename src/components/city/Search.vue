@@ -4,7 +4,7 @@ import { isDebugEnable } from '@/debugEnable.js'
 import { logger } from '@/logger.js'
 import BetterScroll from 'better-scroll'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
-import { isFalse } from '@/isTrue.js'
+import router from '@/router/index.js'
 
 const props = defineProps({
   cityModules: {
@@ -14,7 +14,7 @@ const props = defineProps({
 })
 
 const piniaStore = usePiniaStore() // 获取 pinia store
-const showSearch = ref(false)
+const showSearch = piniaStore.showSearch
 
 const keyword = ref('')
 const searchResults = ref([])
@@ -40,10 +40,8 @@ const printSearchResults = (city) => {
     // logger.debug('matched with city:', city)
   }
 }
-
 onBeforeMount(() => {
-  showSearch.value = piniaStore.showSearch
-  if (isDebugEnable) logger.debug('onBeforeMount showSearch value:', showSearch.value)
+  if (isDebugEnable) logger.debug('onBeforeMount showSearch value:', showSearch)
 })
 
 onMounted(() => {
@@ -60,14 +58,6 @@ onBeforeUnmount(() => {
   }
 })
 
-watch(showSearch, (val) => {
-  piniaStore.updateShowSearch(val)
-  if (isDebugEnable) logger.debug('watch showSearch value:', val)
-  if (isFalse(val)) {
-    keyword.value = '输入城市/景点/游玩主题'
-  }
-})
-
 watch(
   () => searchResults.value,
   (newResults) => {
@@ -75,7 +65,6 @@ watch(
       return
     }
 
-    showSearch.value = true
     piniaStore.updateShowSearch(true)
 
     if (isDebugEnable) {
@@ -106,7 +95,7 @@ watch(
       flattenCities.value.forEach(({ flag, cityCode, name, pinyin }) => {
         if (
           name.includes(_keyword) ||
-          pinyin.toString().toLowerCase().includes(_keyword.toLowerCase())
+          pinyin?.toString()?.toLowerCase().includes(_keyword.toLowerCase())
         ) {
           searchResults.value.push({ flag, cityCode, name, pinyin })
           printSearchResults({ flag, cityCode, name, pinyin })
@@ -121,10 +110,21 @@ watch(
 <template>
   <div class="search">
     <input v-model="keyword" class="search-input" placeholder="城市名/拼音" type="text" />
-    <div v-show="showSearch" ref="wrapper" class="search-content">
+    <div v-show="piniaStore.showSearch" ref="wrapper" class="search-content">
       <div>
         <ul v-for="({ flag, cityCode, name, pinyin }, idx) in searchResults" :key="idx">
-          <li class="search-item border-bottom">{{ name }}</li>
+          <li
+            class="search-item border-bottom"
+            @click="
+              () => {
+                piniaStore.updateCurrentCity(name)
+                piniaStore.updateShowSearch(false)
+                router.push('/')
+              }
+            "
+          >
+            {{ name }}
+          </li>
         </ul>
         <p v-show="searchResults.length === 0" class="search-item border-bottom">无匹配项</p>
       </div>

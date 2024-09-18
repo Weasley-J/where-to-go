@@ -38,7 +38,7 @@ function gotoSearch(showSearch) {
       <span class="iconfont">&#xe632;</span>输入城市/景点/游玩主题
     </div>
     <div class="header-right arrow-icon">
-      <span class="iconfont" @click="gotoCity">{{ city.name }}&#xe62d;</span>
+      <span class="iconfont" @click="gotoCity">{{ piniaStore.currentCity }}&#xe62d;</span>
     </div>
   </div>
 </template>

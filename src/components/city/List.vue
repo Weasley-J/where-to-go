@@ -5,6 +5,7 @@ import eventBus from '@/stores/eventBus.js'
 import { isDebugEnable } from '@/debugEnable.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
 import { logger } from '@/logger.js'
+import router from '@/router/index.js'
 
 const props = defineProps({
   cityModules: {
@@ -22,10 +23,6 @@ const letterElementsRefs = ref([]) // 创建一个数组来存储每个 item 的
 const wrapper = ref(null)
 let scroll = null
 
-// 当前城市字母, 从 piniaStore 中获取
-const cityLetter = computed(() => {
-  return piniaStore.cityLetter || ''
-})
 const currentCityLetter = ref('') // 当前城市字母, 从 eventBus 获取
 const provinceList = computed(() => {
   const domestic = props.cityModules.domestic || {} // 确保 domestic 为对象
@@ -43,6 +40,12 @@ const provinceList = computed(() => {
     )
     .sort((a, b) => a.name.localeCompare(b.name))
 })
+
+function handleClickCity(cityName) {
+  piniaStore.updateCurrentCity(cityName)
+  piniaStore.updateShowSearch(false)
+  router.push('/')
+}
 
 onMounted(() => {
   scroll = new BetterScroll(wrapper.value, {
@@ -109,6 +112,16 @@ watch(
   <div ref="wrapper" class="list">
     <div>
       <div class="area">
+        <div class="title border-topbottom">当前城市</div>
+        <div class="button-list">
+          <div class="button-wrapper">
+            <div v-show="piniaStore.currentCity !== '城市'" class="button">
+              {{ piniaStore.currentCity }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="area">
         <div class="title border-topbottom">热门城市</div>
         <div class="button-list">
           <div
@@ -116,19 +129,21 @@ watch(
             :key="index"
             class="button-wrapper"
           >
-            <div class="button">{{ name }}</div>
+            <div class="button" @click="handleClickCity(name)">{{ name }}</div>
           </div>
         </div>
       </div>
       <div class="area">
-        <div class="title border-topbottom">当前城市</div>
+        <div class="title border-topbottom">附近城市</div>
         <div class="button-list">
           <div
             v-for="({ sightId, placeName, imgUrl }, index) in currentCities"
             :key="sightId"
             class="button-wrapper"
           >
-            <div class="button">{{ placeName }}</div>
+            <div class="button" @click="handleClickCity(placeName)">
+              {{ placeName }}
+            </div>
           </div>
         </div>
       </div>
@@ -141,7 +156,7 @@ watch(
         <div class="title border-topbottom">{{ key }}</div>
         <div class="item-list">
           <ul v-for="({ name, pinyin }, index) in values" :key="index">
-            <li class="item border-top">{{ name }}</li>
+            <li class="item border-top" @click="handleClickCity(name)">{{ name }}</li>
           </ul>
         </div>
       </div>

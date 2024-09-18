@@ -12,14 +12,12 @@ import { useStore } from 'vuex'
 import router from '@/router/index.js'
 
 // 定义数据
-const whereToGoData = ref(null)
-const city = ref({ name: null, type: null })
-const whereToGoHeaderIcons = ref(null)
-const swiperModules = ref([Pagination, Navigation])
-
 const store = useStore()
 const route = useRoute()
 
+const whereToGoData = ref(null)
+const whereToGoHeaderIcons = ref(null)
+const swiperModules = ref([Pagination, Navigation])
 const fetchAllData = async () => {
   try {
     const query = 'all'
@@ -29,7 +27,6 @@ const fetchAllData = async () => {
     if (responseData && responseData.length > 0) {
       const { type, name } = responseData[0]
       whereToGoData.value = responseData
-      city.value = { type, name }
       whereToGoHeaderIcons.value = fetchFullIcons(responseData)
     } else {
       console.error('No data found in response')
@@ -79,7 +76,7 @@ function goToAbout() {
 
 <template>
   <div>
-    <home-header :city="city" :where-to-go-data="whereToGoData" />
+    <home-header :where-to-go-data="whereToGoData" />
     <home-swiper />
     <home-icons :swiper-modules="swiperModules" :where-to-go-header-icons="whereToGoHeaderIcons" />
     <home-recommendation />
