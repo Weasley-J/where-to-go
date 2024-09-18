@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/debugEnable.js'
+import { logger } from '@/logger.js'
 
 const recommendationList = ref({ categoryName: '', categories: [] })
 
@@ -10,7 +11,7 @@ onBeforeMount(async () => {
   const { categoryName, categories } = data
   recommendationList.value = { categoryName, categories }
   if (isDebugEnable) {
-    console.log('recommendation_list:', recommendationList.value)
+    logger.debug('recommendation_list:', recommendationList.value)
   }
 })
 </script>

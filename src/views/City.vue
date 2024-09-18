@@ -7,6 +7,7 @@ import { computed, onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 import { useStore } from 'vuex'
 import { isDebugEnable } from '@/debugEnable.js'
+import { logger } from '@/logger.js'
 
 const store = useStore()
 const cityArgs = {
@@ -30,7 +31,7 @@ const currentCities = computed(() => {
     .sort((a, b) => b.sightId - a.sightId) // 简化排序逻辑
 
   if (isDebugEnable && _currentCities.length > 0) {
-    console.log('CurrentCities: ', _currentCities)
+    logger.debug('current_cities: ', _currentCities)
   }
   return _currentCities
 })
@@ -39,7 +40,7 @@ onBeforeMount(async () => {
   const { domestic, abroad } = data.data
   cityModules.value = { domestic, abroad }
   if (isDebugEnable) {
-    console.log('Domestic: ', cityModules.value.domestic, '\nAbroad: ', cityModules.value.abroad)
+    logger.debug('Domestic: ', cityModules.value.domestic, '\nAbroad: ', cityModules.value.abroad)
   }
 })
 </script>
@@ -47,7 +48,7 @@ onBeforeMount(async () => {
 <template>
   <div>
     <city-header />
-    <city-search />
+    <city-search :city-modules="cityModules" />
     <city-list :city-modules="cityModules" :current-cities="currentCities" />
     <city-alphabet :city-modules="cityModules" />
   </div>

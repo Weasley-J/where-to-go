@@ -2,6 +2,7 @@
 import { computed, onBeforeMount, ref, watch } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/debugEnable.js'
+import { logger } from '@/logger.js'
 
 // 定义属性
 const props = defineProps({
@@ -100,7 +101,7 @@ onBeforeMount(async () => {
     }))
     const paginatedIcons = await mergeIconToPaginationIcons(icons, props.whereToGoHeaderIcons)
     if (isDebugEnable) {
-      console.log('paginated_icons:', paginatedIcons)
+      logger.debug('paginated_icons:', paginatedIcons)
     }
     paginationIcons.value = paginatedIcons
   } catch (err) {

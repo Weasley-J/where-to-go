@@ -3,6 +3,7 @@ import { onBeforeMount, onUpdated, ref, watch } from 'vue'
 import { isDebugEnable } from '@/debugEnable.js'
 import eventBus from '@/stores/eventBus.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
+import { logger } from '@/logger.js'
 
 const props = defineProps({
   defaultCityLetters: {
@@ -50,12 +51,12 @@ watch(
   () => props.cityModules,
   (value, oldValue, onCleanup) => {
     cityLetters.value = Object.keys(value.domestic || {})
-    if (isDebugEnable) console.log('CityLetters: ', cityLetters.value)
+    if (isDebugEnable) logger.debug('CityLetters: ', cityLetters.value)
   }
 )
 
 function handleClickCityLetter(alphabet) {
-  if (isDebugEnable) console.log(`You clicked: ${alphabet}`)
+  if (isDebugEnable) logger.debug(`You clicked: ${alphabet}`)
   eventBus.currentCityLetter = alphabet // Type 1
   piniaStore.updateCityLetter(alphabet) // Type 2
 }
@@ -98,7 +99,7 @@ function handleTouchMove(event) {
     if (index >= 0 && index < cityLetters.value.length) {
       const indexLetter = cityLetters.value[index]
       if (isDebugEnable) {
-        console.log(
+        logger.debug(
           `Handle scroll events: startY=${startY_}, index=${index}, letter=${indexLetter}`
         )
       }

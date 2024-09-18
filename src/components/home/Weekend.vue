@@ -2,6 +2,7 @@
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/debugEnable.js'
+import { logger } from '@/logger.js'
 
 const weekendList = ref({ categoryName: '', categories: [] })
 onBeforeMount(async () => {
@@ -9,7 +10,7 @@ onBeforeMount(async () => {
   const { categoryName, categories } = data
   weekendList.value = { categoryName, categories }
   if (isDebugEnable) {
-    console.log('weekend_list:', weekendList.value)
+    logger.debug('weekend_list:', weekendList.value)
   }
 })
 </script>

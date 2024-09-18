@@ -1,10 +1,10 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useStore } from 'vuex'
 import BetterScroll from 'better-scroll'
 import eventBus from '@/stores/eventBus.js'
 import { isDebugEnable } from '@/debugEnable.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
+import { logger } from '@/logger.js'
 
 const props = defineProps({
   cityModules: {
@@ -17,10 +17,9 @@ const props = defineProps({
   }
 })
 
-const store = useStore()
 const piniaStore = usePiniaStore() // 获取 pinia store
-const wrapper = ref(null)
 const letterElementsRefs = ref([]) // 创建一个数组来存储每个 item 的 DOM 元素引用
+const wrapper = ref(null)
 let scroll = null
 
 // 当前城市字母, 从 piniaStore 中获取
@@ -70,11 +69,11 @@ watch(
   () => piniaStore.cityLetter,
   (newCityLetter, oldValue) => {
     if (isDebugEnable) {
-      console.log('获取 pinia store 消息: ', newCityLetter)
+      logger.debug('获取 pinia store 消息: ', newCityLetter)
     }
     if (newCityLetter) {
       let scrollElement = letterElementsRefs.value[newCityLetter] // 获取当前城市字母对应的元素
-      if (isDebugEnable) console.log('Scrolling to Element:\n', scrollElement)
+      if (isDebugEnable) logger.debug('Scrolling to Element:\n', scrollElement)
       // 滚动到元素
       if (scrollElement) {
         // scrollElement.scrollIntoView({ behavior: 'smooth' })
@@ -98,8 +97,8 @@ watch(
   (value, oldValue, onCleanup) => {
     if (value) {
       currentCityLetter.value = value
-      if (value && isDebugEnable) {
-        console.log(`Current city letter changed (eventBus): ${value}`)
+      if (isDebugEnable) {
+        logger.debug(`Current city letter changed (eventBus): ${value}`)
       }
     }
   }
