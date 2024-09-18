@@ -1,6 +1,7 @@
 <script setup>
 import router from '@/router/index.js'
 import vuexStore from '@/stores/vuexStore.js'
+import { usePiniaStore } from '@/stores/usePiniaStore.js'
 
 const props = defineProps({
   city: {
@@ -10,9 +11,19 @@ const props = defineProps({
   whereToGoData: null
 })
 
+const piniaStore = usePiniaStore()
+
 function gotoCity() {
   vuexStore.commit('setIconPackages', props.whereToGoData)
   router.push('/city').then(() => {
+    window.scrollTo(0, 0)
+  })
+  piniaStore.updateShowSearch(false)
+}
+
+function gotoSearch(showSearch) {
+  piniaStore.updateShowSearch(showSearch)
+  router.push('/search').then(() => {
     window.scrollTo(0, 0)
   })
 }
@@ -23,9 +34,11 @@ function gotoCity() {
     <div class="header-left">
       <div class="iconfont back-icon">&#xe624;</div>
     </div>
-    <div class="header-input"><span class="iconfont">&#xe632;</span>输入城市/景点/游玩主题</div>
-    <div class="header-right arrow-icon" @click="gotoCity">
-      {{ city.name }}<span class="iconfont">&#xe62d;</span>
+    <div class="header-input" @click="gotoSearch(true)">
+      <span class="iconfont">&#xe632;</span>输入城市/景点/游玩主题
+    </div>
+    <div class="header-right arrow-icon">
+      <span class="iconfont" @click="gotoCity">{{ city.name }}&#xe62d;</span>
     </div>
   </div>
 </template>
@@ -47,13 +60,15 @@ function gotoCity() {
   .back-icon
     text-align: center
     font-size: .8rem
+    margin: 0.1rem
 
   .header-input
     flex: 1
     height: 1.28rem
     line-height: 1.28rem
     margin-top: 0.48rem
-    margin-left: .2rem
+    margin-left: 0.3rem;
+    margin-right: 0.5rem;
     border-radius: .18rem
     background: #fff
     color: #ccc

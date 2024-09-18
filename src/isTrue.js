@@ -9,3 +9,4 @@ function isTrue(value) {
 }
 
 export default isTrue
+export const isFalse = (value) => !isTrue(value)

@@ -1,14 +1,140 @@
-<script setup></script>
+<script setup>
+import { onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { isDebugEnable } from '@/debugEnable.js'
+import { logger } from '@/logger.js'
+import BetterScroll from 'better-scroll'
+import { usePiniaStore } from '@/stores/usePiniaStore.js'
+import { isFalse } from '@/isTrue.js'
+
+const props = defineProps({
+  cityModules: {
+    type: Object,
+    default: () => ({ domestic: null, abroad: null })
+  }
+})
+
+const piniaStore = usePiniaStore() // 获取 pinia store
+const showSearch = ref(false)
+
+const keyword = ref('')
+const searchResults = ref([])
+const searchRefs = ref([])
+const timer = ref(null)
+const flattenCities = ref({})
+const wrapper = ref(null)
+let scroll = null
+
+// 初始化时将cityModules扁平化
+const initFlattenCities = () => {
+  flattenCities.value = Object.entries(props.cityModules.domestic || {}).flatMap(([key, value]) =>
+    Object.entries(value).map(([k, { flag, cityCode, name, pinyin }]) => ({
+      flag,
+      cityCode,
+      name,
+      pinyin
+    }))
+  )
+}
+const printSearchResults = (city) => {
+  if (isDebugEnable) {
+    // logger.debug('matched with city:', city)
+  }
+}
+
+onBeforeMount(() => {
+  showSearch.value = piniaStore.showSearch
+  if (isDebugEnable) logger.debug('onBeforeMount showSearch value:', showSearch.value)
+})
+
+onMounted(() => {
+  initFlattenCities()
+  scroll = new BetterScroll(wrapper.value, {
+    scrollY: true,
+    click: true,
+    mouseWheel: true
+  })
+})
+onBeforeUnmount(() => {
+  if (scroll) {
+    scroll.destroy()
+  }
+})
+
+watch(showSearch, (val) => {
+  piniaStore.updateShowSearch(val)
+  if (isDebugEnable) logger.debug('watch showSearch value:', val)
+  if (isFalse(val)) {
+    keyword.value = '输入城市/景点/游玩主题'
+  }
+})
+
+watch(
+  () => searchResults.value,
+  (newResults) => {
+    if (!wrapper.value) {
+      return
+    }
+
+    showSearch.value = true
+    piniaStore.updateShowSearch(true)
+
+    if (isDebugEnable) {
+      logger.info('search-content wrapper value : ', wrapper.value)
+    }
+    if (scroll) {
+      setTimeout(() => {
+        scroll.refresh() // 刷新滚动实例
+      }, 500)
+    }
+  },
+  { immediate: true }
+)
+
+// 在 component mounted 或 props 改变时调用 initFlattenCities
+watch(() => props.cityModules, initFlattenCities, { immediate: true })
+watch(
+  () => keyword.value,
+  (keyword) => {
+    let _keyword = keyword.toString().trim()
+    if (!_keyword) {
+      searchResults.value = []
+      return
+    }
+    searchResults.value = [] // 清空搜索结果
+    if (timer.value) clearTimeout(timer.value) // 取消上一次的搜索请求
+    timer.value = setTimeout(() => {
+      flattenCities.value.forEach(({ flag, cityCode, name, pinyin }) => {
+        if (
+          name.includes(_keyword) ||
+          pinyin.toString().toLowerCase().includes(_keyword.toLowerCase())
+        ) {
+          searchResults.value.push({ flag, cityCode, name, pinyin })
+          printSearchResults({ flag, cityCode, name, pinyin })
+        }
+      })
+    }, 200)
+  },
+  { immediate: true }
+)
+</script>
 
 <template>
   <div class="search">
-    <input class="search-input" placeholder="城市名/拼音" type="text" />
+    <input v-model="keyword" class="search-input" placeholder="城市名/拼音" type="text" />
+    <div v-show="showSearch" ref="wrapper" class="search-content">
+      <div>
+        <ul v-for="({ flag, cityCode, name, pinyin }, idx) in searchResults" :key="idx">
+          <li class="search-item border-bottom">{{ name }}</li>
+        </ul>
+        <p v-show="searchResults.length === 0" class="search-item border-bottom">无匹配项</p>
+      </div>
+    </div>
   </div>
 </template>
 
 <style lang="stylus" scoped>
 .search
-  height 2rem
+  height 2.2rem
   padding: 0 .2rem
   background #00bcd4
 
@@ -32,4 +158,20 @@
     &::user-focus
       border-color #ff4081
       background-color #fff;
+
+  .search-content
+    overflow hidden
+    position absolute
+    z-index 1
+    top 3.58rem
+    left 0
+    right 0
+    bottom 0
+    background #eee
+
+    .search-item
+      padding .4rem 0 .28rem .4rem
+      line-height 1rem
+      background-color #fff
+      color #666
 </style>
