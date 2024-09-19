@@ -1,8 +1,8 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
-import { isDebugEnable } from '@/common/debugEnable.js'
-import { logger } from '@/common/logger.js'
+import { isDebugEnable } from '@/common-js/debugEnable.js'
+import { logger } from '@/common-js/logger.js'
 
 const recommendationList = ref({ categoryName: '', categories: [] })
 
@@ -21,15 +21,17 @@ onBeforeMount(async () => {
     <div class="recommendation-title">{{ recommendationList.categoryName }}</div>
     <ul>
       <li
+        class="recommendation-item border-bottom"
         v-for="{ id, title, imgUrl, desc } in recommendationList.categories"
         :key="id"
-        class="recommendation-item border-bottom"
       >
         <img :src="imgUrl" alt="recommendation-item" class="item-img" />
         <div class="item-info">
           <p class="item-title">{{ title }}</p>
           <p class="item-desc">{{ desc }}</p>
-          <button class="item-button" type="button">查看详情</button>
+          <router-link :to="`/detail/${id}`">
+            <button class="item-button" type="button">查看详情</button>
+          </router-link>
         </div>
       </li>
     </ul>
@@ -41,6 +43,12 @@ ellipse()
   overflow hidden
   white-space nowrap
   text-overflow ellipsis
+
+
+/* 覆盖 <router-link> 默认的 <a> 标签样式 */
+a.recommendation-item
+  text-decoration none
+  color inherit
 
 .recommendation-title
   margin-top 0.85rem

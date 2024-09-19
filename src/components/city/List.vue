@@ -1,12 +1,12 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import eventBus from '@/stores/eventBus.js'
-import { isDebugEnable } from '@/common/debugEnable.js'
+import { isDebugEnable } from '@/common-js/debugEnable.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
-import { logger } from '@/common/logger.js'
+import { logger } from '@/common-js/logger.js'
 import router from '@/router/index.js'
 import { useRoute } from 'vue-router'
-import { destroyScroll, initScroll, refreshScroll } from '@/common/scrollHelper.js'
+import { destroyScroll, initScroll, refreshScroll } from '@/common-js/scrollHelper.js'
 
 const props = defineProps({
   cityModules: {
