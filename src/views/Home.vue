@@ -2,14 +2,13 @@
 import HomeHeader from '@/components/home/Header.vue'
 import HomeSwiper from '@/components/home/HomeSwiper.vue'
 import HomeIcons from '@/components/home/Icons.vue'
-import { onMounted, ref, watch } from 'vue'
+import { onActivated, onMounted, ref, watch } from 'vue'
 import axios from 'axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import HomeRecommendation from '@/components/home/Recommendation.vue'
 import HomeWeekend from '@/components/home/Weekend.vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import { useStore } from 'vuex'
-import router from '@/router/index.js'
 import { isDebugEnable } from '@/common/debugEnable.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
 import { logger } from '@/common/logger.js'
@@ -18,15 +17,17 @@ import isTrue from '@/common/isTrue.js'
 // 定义数据
 const store = useStore()
 const route = useRoute()
+const router = useRouter()
+
 const piniaStore = usePiniaStore()
-const showRefresh = ref(!isTrue(import.meta.env.VITE_IS_PROD))
+const refreshData = ref(!isTrue(import.meta.env.VITE_IS_PROD))
 const whereToGoData = ref(null)
 const whereToGoHeaderIcons = ref(null)
 const swiperModules = ref([Pagination, Navigation])
-
+const lastCity = ref('')
 const fetchSourceData = async () => {
   const query = 'all'
-  const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free`
+  const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free&city=${lastCity}`
   try {
     const { data } = await axios.get(url)
     const responseData = data.data
@@ -46,7 +47,7 @@ const fetchSourceData = async () => {
 const refreshAllData = async () => {
   await fetchSourceData()
   setTimeout(() => {
-    showRefresh.value = false
+    refreshData.value = false
   }, 3000)
 }
 const fetchFullIcons = (whereToDoData) => {
@@ -58,22 +59,6 @@ const fetchFullIcons = (whereToDoData) => {
   return fullIconPack
 }
 
-/**
- * 进入页面时加载数据
- */
-onMounted(async () => {
-  await fetchSourceData()
-  whereToGoData.value = piniaStore.whereToGoData
-  whereToGoHeaderIcons.value = fetchFullIcons(piniaStore.whereToGoData)
-})
-
-/** 监听路由变化：是否要重载数据 */
-watch(route, () => {
-  if (isDebugEnable) {
-    logger.info('Home.vue: 路由变化: ', route.path)
-  }
-})
-
 // 跳转到关于页面：并传递数据，不改变地址栏
 function goToAbout() {
   store.commit('setIconPackages', whereToGoData)
@@ -84,6 +69,36 @@ function goToAbout() {
       window.scrollTo(0, 0) // 在跳转成功后，滚动到页面顶部
     })
 }
+
+/**
+ * 进入页面时加载数据
+ */
+onMounted(async () => {
+  await fetchSourceData()
+  lastCity.value = piniaStore.currentCity
+  whereToGoData.value = piniaStore.whereToGoData
+  whereToGoHeaderIcons.value = fetchFullIcons(piniaStore.whereToGoData)
+})
+
+/** 监听路由变化：是否要重载数据 */
+watch(route, (to, from) => {
+  let lastRoute = router.options.history.state.back // 上一个路由的完整路径
+  let currentRoute = route.fullPath // 当前路由的完整路径
+  if (isDebugEnable) {
+    logger.info('Home.vue: 路由变化: ', currentRoute, ' => ', lastRoute)
+  }
+})
+
+onActivated(() => {
+  if (lastCity.value && lastCity.value !== piniaStore.currentCity) {
+    fetchSourceData()
+    if (isDebugEnable) {
+      logger.debug(
+        `City changed, fetching new data: lastCity: ${lastCity.value}, currentCity: ${piniaStore.currentCity}`
+      )
+    }
+  }
+})
 </script>
 
 <template>
@@ -96,7 +111,7 @@ function goToAbout() {
     <nav>
       <span class="navigation-button" @click="goToAbout">关于</span>
     </nav>
-    <div v-show="showRefresh" class="fetch-home-data">
+    <div v-show="refreshData" class="fetch-home-data">
       <button class="fetch-data-btn" @click="refreshAllData">refresh data</button>
     </div>
   </div>
