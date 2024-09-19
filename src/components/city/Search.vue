@@ -1,10 +1,10 @@
 <script setup>
 import { onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { isDebugEnable } from '@/debugEnable.js'
-import { logger } from '@/logger.js'
-import BetterScroll from 'better-scroll'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
 import router from '@/router/index.js'
+import { destroyScroll, initScroll, refreshScroll } from '@/common/scrollHelper.js'
 
 const props = defineProps({
   cityModules: {
@@ -16,7 +16,6 @@ const props = defineProps({
 const piniaStore = usePiniaStore() // 获取 pinia store
 const showSearch = piniaStore.showSearch
 
-const keyword = ref('')
 const searchResults = ref([])
 const searchRefs = ref([])
 const timer = ref(null)
@@ -35,28 +34,6 @@ const initFlattenCities = () => {
     }))
   )
 }
-const printSearchResults = (city) => {
-  if (isDebugEnable) {
-    // logger.debug('matched with city:', city)
-  }
-}
-onBeforeMount(() => {
-  if (isDebugEnable) logger.debug('onBeforeMount showSearch value:', showSearch)
-})
-
-onMounted(() => {
-  initFlattenCities()
-  scroll = new BetterScroll(wrapper.value, {
-    scrollY: true,
-    click: true,
-    mouseWheel: true
-  })
-})
-onBeforeUnmount(() => {
-  if (scroll) {
-    scroll.destroy()
-  }
-})
 
 watch(
   () => searchResults.value,
@@ -64,17 +41,9 @@ watch(
     if (!wrapper.value) {
       return
     }
-
     piniaStore.updateShowSearch(true)
-
-    if (isDebugEnable) {
-      logger.info('search-content wrapper value : ', wrapper.value)
-    }
-    if (scroll) {
-      setTimeout(() => {
-        scroll.refresh() // 刷新滚动实例
-      }, 500)
-    }
+    if (isDebugEnable) logger.info('search-content wrapper value : ', wrapper.value)
+    refreshScroll(scroll)
   },
   { immediate: true }
 )
@@ -82,13 +51,14 @@ watch(
 // 在 component mounted 或 props 改变时调用 initFlattenCities
 watch(() => props.cityModules, initFlattenCities, { immediate: true })
 watch(
-  () => keyword.value,
+  () => piniaStore.keyword,
   (keyword) => {
     let _keyword = keyword.toString().trim()
     if (!_keyword) {
       searchResults.value = []
       return
     }
+    piniaStore.updateKeyword(_keyword)
     searchResults.value = [] // 清空搜索结果
     if (timer.value) clearTimeout(timer.value) // 取消上一次的搜索请求
     timer.value = setTimeout(() => {
@@ -98,18 +68,35 @@ watch(
           pinyin?.toString()?.toLowerCase().includes(_keyword.toLowerCase())
         ) {
           searchResults.value.push({ flag, cityCode, name, pinyin })
-          printSearchResults({ flag, cityCode, name, pinyin })
         }
       })
     }, 200)
   },
   { immediate: true }
 )
+
+onBeforeMount(() => {
+  if (isDebugEnable) logger.debug('onBeforeMount showSearch value:', showSearch)
+})
+
+onMounted(() => {
+  initFlattenCities()
+  scroll = initScroll(wrapper)
+})
+
+onBeforeUnmount(() => {
+  destroyScroll(scroll)
+})
 </script>
 
 <template>
   <div class="search">
-    <input v-model="keyword" class="search-input" placeholder="城市名/拼音" type="text" />
+    <input
+      v-model="piniaStore.keyword"
+      class="search-input"
+      placeholder="城市名/拼音"
+      type="text"
+    />
     <div v-show="piniaStore.showSearch" ref="wrapper" class="search-content">
       <div>
         <ul v-for="({ flag, cityCode, name, pinyin }, idx) in searchResults" :key="idx">

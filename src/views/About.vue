@@ -2,8 +2,8 @@
 import { computed, ref, version as vueVersion } from 'vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router'
-import { isDebugEnable } from '@/debugEnable.js'
-import { logger } from '@/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 
 let viteAppName = import.meta.env.VITE_APP_NAME
 let viteAppId = import.meta.env.VITE_APP_ID

@@ -19,9 +19,11 @@ function gotoCity() {
     window.scrollTo(0, 0)
   })
   piniaStore.updateShowSearch(false)
+  piniaStore.updateKeyword('')
 }
 
 function gotoSearch(showSearch) {
+  piniaStore.updateKeyword('')
   piniaStore.updateShowSearch(showSearch)
   router.push('/search').then(() => {
     window.scrollTo(0, 0)
@@ -76,7 +78,7 @@ function gotoSearch(showSearch) {
 
   .header-right
     min-width: 1.04rem
-    padding: 0.1rem
+    padding: 0.1rem 0.3rem 0 0
     float: right
     text-align: center
     color: #fff

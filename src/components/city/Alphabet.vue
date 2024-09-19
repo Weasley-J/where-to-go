@@ -1,9 +1,9 @@
 <script setup>
 import { onBeforeMount, onUpdated, ref, watch } from 'vue'
-import { isDebugEnable } from '@/debugEnable.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
 import eventBus from '@/stores/eventBus.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
-import { logger } from '@/logger.js'
+import { logger } from '@/common/logger.js'
 
 const props = defineProps({
   defaultCityLetters: {

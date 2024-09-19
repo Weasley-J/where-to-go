@@ -1,13 +1,15 @@
 import { defineStore } from 'pinia'
-import { isDebugEnable } from '@/debugEnable.js'
-import { logger } from '@/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 
 // Create a Pinia store
 export const usePiniaStore = defineStore('use-pinia-store', {
   state: () => ({
+    keyword: '',
     cityLetter: '',
     currentCity: getCurrentCity(),
-    showSearch: false
+    showSearch: false,
+    whereToGoData: null
   }),
   actions: {
     updateCityLetter(letter) {
@@ -26,6 +28,13 @@ export const usePiniaStore = defineStore('use-pinia-store', {
       } catch (e) {
         logger.error('Failed to update current city in localStorage', e)
       }
+    },
+    updateWhereToGoData(data) {
+      logUpdate(data)
+      this.whereToGoData = data
+    },
+    updateKeyword(keyword) {
+      this.keyword = keyword
     }
   }
 })
