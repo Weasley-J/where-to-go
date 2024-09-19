@@ -10,30 +10,44 @@ import HomeWeekend from '@/components/home/Weekend.vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import { useStore } from 'vuex'
 import router from '@/router/index.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { usePiniaStore } from '@/stores/usePiniaStore.js'
+import { logger } from '@/common/logger.js'
+import isTrue from '@/common/isTrue.js'
 
 // 定义数据
 const store = useStore()
 const route = useRoute()
-
+const piniaStore = usePiniaStore()
+const showRefresh = ref(!isTrue(import.meta.env.VITE_IS_PROD))
 const whereToGoData = ref(null)
 const whereToGoHeaderIcons = ref(null)
 const swiperModules = ref([Pagination, Navigation])
-const fetchAllData = async () => {
+
+const fetchSourceData = async () => {
+  const query = 'all'
+  const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free`
   try {
-    const query = 'all'
-    const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free`
     const { data } = await axios.get(url)
     const responseData = data.data
     if (responseData && responseData.length > 0) {
-      const { type, name } = responseData[0]
-      whereToGoData.value = responseData
-      whereToGoHeaderIcons.value = fetchFullIcons(responseData)
+      piniaStore.updateWhereToGoData(responseData)
+      if (isDebugEnable) {
+        logger.info('Home.vue: fetchSourceData: responseData', piniaStore.whereToGoData)
+      }
     } else {
       console.error('No data found in response')
     }
   } catch (error) {
     console.error('Error fetching data:', error)
   }
+}
+
+const refreshAllData = async () => {
+  await fetchSourceData()
+  setTimeout(() => {
+    showRefresh.value = false
+  }, 3000)
 }
 const fetchFullIcons = (whereToDoData) => {
   let fullIconPack = []
@@ -47,18 +61,16 @@ const fetchFullIcons = (whereToDoData) => {
 /**
  * 进入页面时加载数据
  */
-onMounted(() => {
-  fetchAllData()
-  if (whereToGoData.value && whereToGoData.value.length > 0) {
-    console.log('进入页面时加载: ', JSON.stringify(whereToGoData.value))
-  }
+onMounted(async () => {
+  await fetchSourceData()
+  whereToGoData.value = piniaStore.whereToGoData
+  whereToGoHeaderIcons.value = fetchFullIcons(piniaStore.whereToGoData)
 })
 
-/** 监听路由变化-重载数据 */
+/** 监听路由变化：是否要重载数据 */
 watch(route, () => {
-  fetchAllData()
-  if (whereToGoData.value && whereToGoData.value.length > 0) {
-    console.log('路由变化重新加载: ', JSON.stringify(whereToGoData.value))
+  if (isDebugEnable) {
+    logger.info('Home.vue: 路由变化: ', route.path)
   }
 })
 
@@ -81,34 +93,32 @@ function goToAbout() {
     <home-icons :swiper-modules="swiperModules" :where-to-go-header-icons="whereToGoHeaderIcons" />
     <home-recommendation />
     <home-weekend />
-    <div class="fetch-home-data">
-      <button class="fetch-data-btn" @click="fetchAllData">刷新数据</button>
-    </div>
     <nav>
       <span class="navigation-button" @click="goToAbout">关于</span>
     </nav>
+    <div v-show="showRefresh" class="fetch-home-data">
+      <button class="fetch-data-btn" @click="refreshAllData">refresh data</button>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .fetch-home-data {
-  margin-top: 18px;
-  margin-bottom: 18px;
-  text-align: center;
+  margin: 0 20px 30px 0;
+  text-align: right;
 }
 
 .fetch-data-btn {
-  display: none;
   background-color: #fff;
   color: #00bcd4;
-  border: 1px solid #00bcd4;
+  border: #00bcd4;
   border-radius: 8px;
 }
 
 nav {
-  margin-top: 18px;
-  margin-bottom: 18px;
-  text-align: center;
+  margin: 25px 33px 0 0;
+  padding-bottom: 25px;
+  text-align: right;
 }
 
 .navigation-button {

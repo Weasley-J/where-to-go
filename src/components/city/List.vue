@@ -1,11 +1,12 @@
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import BetterScroll from 'better-scroll'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import eventBus from '@/stores/eventBus.js'
-import { isDebugEnable } from '@/debugEnable.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
-import { logger } from '@/logger.js'
+import { logger } from '@/common/logger.js'
 import router from '@/router/index.js'
+import { useRoute } from 'vue-router'
+import { destroyScroll, initScroll, refreshScroll } from '@/common/scrollHelper.js'
 
 const props = defineProps({
   cityModules: {
@@ -18,6 +19,7 @@ const props = defineProps({
   }
 })
 
+const route = useRoute()
 const piniaStore = usePiniaStore() // 获取 pinia store
 const letterElementsRefs = ref([]) // 创建一个数组来存储每个 item 的 DOM 元素引用
 const wrapper = ref(null)
@@ -48,23 +50,12 @@ function handleClickCity(cityName) {
 }
 
 onMounted(() => {
-  scroll = new BetterScroll(wrapper.value, {
-    scrollY: true,
-    click: true
-  })
-  /**
-   * 如果内容可能是动态加载的，可以监听数据变化
-   * 比如监听 props.currentCities 变化，
-   * 在数据更新后重新刷新后调用 scroll.refresh() 刷新 BetterScroll
-   */
-  setTimeout(() => {
-    scroll.refresh() // 确保内容更新后 BetterScroll 刷新
-  }, 500)
+  scroll = initScroll(wrapper)
+  refreshScroll(scroll)
 })
+
 onBeforeUnmount(() => {
-  if (scroll) {
-    scroll.destroy()
-  }
+  destroyScroll(scroll)
 })
 
 // 获取 pinia store 消息
@@ -89,8 +80,8 @@ watch(
 watch(
   () => props.currentCities,
   (value, oldValue, onCleanup) => {
-    if (value && scroll) {
-      scroll.refresh()
+    if (value) {
+      refreshScroll(scroll)
     }
   }
 )
@@ -106,6 +97,10 @@ watch(
     }
   }
 )
+watch(route, async (to, from) => {
+  if (isDebugEnable) logger.info('List.vue: 路由变化: ', route.path)
+  await nextTick(() => scroll?.refresh()) // 刷新滚动实例: nextTick 配合 async-await 使用
+})
 </script>
 
 <template>

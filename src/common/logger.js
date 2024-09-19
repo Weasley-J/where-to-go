@@ -1,4 +1,4 @@
-import { isDebugEnable } from '@/debugEnable.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
 
 function createLogger(level = 'info') {
   const levels = ['trace', 'debug', 'info', 'warn', 'error', 'fatal']

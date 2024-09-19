@@ -1,8 +1,8 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
-import { isDebugEnable } from '@/debugEnable.js'
-import { logger } from '@/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 
 const weekendList = ref({ categoryName: '', categories: [] })
 onBeforeMount(async () => {

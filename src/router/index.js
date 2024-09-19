@@ -6,8 +6,9 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Home
+      name: 'Home',
+      component: Home,
+      meta: { keepAlive: true }
     },
     {
       path: '/login',
@@ -17,22 +18,26 @@ const router = createRouter({
     {
       path: '/about',
       name: 'About',
-      component: () => import('../views/About.vue')
+      component: () => import('../views/About.vue'),
+      meta: { keepAlive: true }
     },
     {
       path: '/sayHi',
       name: 'SayHello',
-      component: () => import('../components/SayHello.vue')
+      component: () => import('../components/SayHello.vue'),
+      meta: { keepAlive: false }
     },
     {
       path: '/city',
       name: 'City',
-      component: () => import('../views/City.vue')
+      component: () => import('../views/City.vue'),
+      meta: { keepAlive: true }
     },
     {
       path: '/search',
       name: 'Search',
-      component: () => import('../views/city.vue')
+      component: () => import('../views/city.vue'),
+      meta: { keepAlive: true }
     }
   ]
 })

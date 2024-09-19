@@ -36,6 +36,7 @@ export default defineConfig(({ command, mode }) => {
       }
     },
     server: {
+      open: true,
       proxy: proxyConfig
     }
   }
@@ -57,11 +58,9 @@ function isBase64(str) {
 }
 
 function encodeBase64(str, recursiveCount = 1, currentCount = 0) {
-  // 递归的终止条件：达到指定递归次数
   if (currentCount >= recursiveCount) {
     return str
   }
-  // 使用 TextEncoder 编码为 UTF-8，再进行 Base64 编码
   const utf8Bytes = new TextEncoder().encode(str)
   const base64String = btoa(String.fromCharCode(...utf8Bytes))
   return encodeBase64(base64String, recursiveCount, currentCount + 1)
@@ -70,7 +69,7 @@ function encodeBase64(str, recursiveCount = 1, currentCount = 0) {
 function decodeBase64(encodedStr) {
   let decode = encodedStr
   if (isBase64(decode)) {
-    decode = atob(decode) // Base64 解码为字符
+    decode = atob(decode)
     decode = utf8Decode(decode)
     return decodeBase64(decode)
   } else {
@@ -78,7 +77,6 @@ function decodeBase64(encodedStr) {
   }
 }
 
-// 将 Base64 解码后的字符转换为 UTF-8 字符串
 function utf8Decode(utf8String) {
   const bytes = new Uint8Array(utf8String.split('').map((char) => char.charCodeAt(0)))
   return new TextDecoder().decode(bytes)
@@ -95,13 +93,12 @@ function isTrue(value) {
 }
 
 /**
- * APIs: 主要用于解析环境变量，并返回 API 地址
+ * APIs
  */
 const APIs = (mode) => {
   const env = loadEnv(mode, process.cwd(), '')
   const isDebugEnable = isTrue(env.VITE_IS_DEBUG_ENABLE)
 
-  // 创建一个包含 API URL 的数组
   const apiUrls = [
     { key: 'apiUrlZtDujia', url: env.APP_API_URL_ZT_DUJIA_QUNAR },
     { key: 'apiUrlTouchDujia', url: env.APP_API_URL_TOUCH_DUJIA_QUNAR },
@@ -109,8 +106,6 @@ const APIs = (mode) => {
   ]
 
   let encodeByBase64 = false
-
-  // 遍历 API URL，解码 Base64 编码的 URL
   apiUrls.forEach((api) => {
     if (isBase64(api.url)) {
       encodeByBase64 = true
@@ -118,12 +113,10 @@ const APIs = (mode) => {
     }
   })
 
-  // 如果调试模式启用且有 URL 被解码，则打印日志
   if (isDebugEnable && encodeByBase64) {
     console.log(`Parsed APIs: ${apiUrls.map((api) => api.url).join(', ')}\n`)
   }
 
-  // 返回结果
   return {
     isDebugEnable,
     hosts: Object.fromEntries(apiUrls.map((api) => [api.key, api.url]))

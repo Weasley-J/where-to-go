@@ -1,4 +1,4 @@
-import isTrue from '@/isTrue.js'
+import isTrue from '@/common/isTrue.js'
 
 /**
  * This function is used to check if the debug mode is enabled.
