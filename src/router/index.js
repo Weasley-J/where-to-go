@@ -24,7 +24,7 @@ const router = createRouter({
     {
       path: '/sayHi',
       name: 'SayHello',
-      component: () => import('../components/SayHello.vue'),
+      component: () => import('../components/example/SayHello.vue'),
       meta: { keepAlive: false }
     },
     {
