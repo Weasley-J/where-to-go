@@ -105,7 +105,7 @@ function handleTouchMove(event) {
       }
       handleClickCityLetter(indexLetter) // 触发点击事件
     }
-  }, 16) // 16ms 是一个典型的帧率间隔时间（60fps）
+  }, 8) // 16ms 是一个典型的帧率间隔时间（60fps）
 }
 
 function handleTouchEnd(event) {
