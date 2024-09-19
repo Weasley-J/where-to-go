@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { isDebugEnable } from '@/common/debugEnable.js'
-import { logger } from '@/common/logger.js'
+import { isDebugEnable } from '@/common-js/debugEnable.js'
+import { logger } from '@/common-js/logger.js'
 
 // Create a Pinia store
 export const usePiniaStore = defineStore('use-pinia-store', {
@@ -9,6 +9,7 @@ export const usePiniaStore = defineStore('use-pinia-store', {
     cityLetter: '',
     currentCity: getCurrentCity(),
     showSearch: false,
+    showGallery: false,
     whereToGoData: null
   }),
   actions: {
@@ -35,6 +36,10 @@ export const usePiniaStore = defineStore('use-pinia-store', {
     },
     updateKeyword(keyword) {
       this.keyword = keyword
+    },
+    updateShowGallery(showGallery) {
+      logUpdate(showGallery)
+      this.showGallery = showGallery
     }
   }
 })

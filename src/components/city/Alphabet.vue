@@ -1,9 +1,9 @@
 <script setup>
 import { onBeforeMount, onUpdated, ref, watch } from 'vue'
-import { isDebugEnable } from '@/common/debugEnable.js'
+import { isDebugEnable } from '@/common-js/debugEnable.js'
 import eventBus from '@/stores/eventBus.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
-import { logger } from '@/common/logger.js'
+import { logger } from '@/common-js/logger.js'
 
 const props = defineProps({
   defaultCityLetters: {
@@ -26,7 +26,6 @@ const props = defineProps({
 })
 
 const cityLetters = ref([])
-const currentCityLetter = ref('')
 const piniaStore = usePiniaStore()
 const touchStatus = ref(false)
 const letterElRefs = ref([]) // 定义存储 DOM 元素引用的对象

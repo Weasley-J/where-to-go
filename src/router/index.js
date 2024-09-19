@@ -22,6 +22,12 @@ const router = createRouter({
       meta: { keepAlive: true }
     },
     {
+      path: '/detail/:id',
+      name: 'Detail',
+      component: () => import('../views/Detail.vue'),
+      meta: { keepAlive: false }
+    },
+    {
       path: '/sayHi',
       name: 'SayHello',
       component: () => import('../components/example/SayHello.vue'),
