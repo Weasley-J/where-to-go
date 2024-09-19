@@ -9,11 +9,8 @@ import App from './App.vue'
 import router from './router'
 import vuexStore from './stores/vuexStore.js'
 
-import { FastClick } from 'wy-fastclick'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { createPinia } from 'pinia'
-
-FastClick.attach(document.body)
 
 const piniaStore = createPinia()
 const app = createApp(App)

@@ -27,7 +27,7 @@ const swiperModules = ref([Pagination, Navigation])
 const lastCity = ref('')
 const fetchSourceData = async () => {
   const query = 'all'
-  const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free&city=${lastCity}`
+  const url = `/api/touch/golfz/free/travelClass?query=${query}&dep=&type=free&city=${lastCity.value}`
   try {
     const { data } = await axios.get(url)
     const responseData = data.data
