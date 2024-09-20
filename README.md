@@ -1,15 +1,15 @@
 # 1 Where to go
 
 1.1 video thumbnail
-![Video Preview](demo-video/Picsew_20240921021232.JPEG)
-![Video Preview](demo-video/Picsew_20240921021319.JPEG)
+![Video Preview](thumbnail/Picsew_20240921021232.JPEG)
+![Video Preview](thumbnail/Picsew_20240921021319.JPEG)
 
-1.2 [点击这里查看视频](demo-video/video-thumbnail.mp4)
+1.2 [点击这里查看视频](thumbnail/video-thumbnail.mp4)
 
 1.3 Demo video
 
 <video style="transform: scale(0.35); transform-origin: top left;" controls>
-  <source src="demo-video/video-thumbnail.mp4" type="video/mp4">
+  <source src="thumbnail/video-thumbnail.mp4" type="video/mp4">
   您的浏览器不支持 HTML5 视频标签。
 </video>
 
