@@ -3,10 +3,10 @@ import DetailBanner from '@/components/detail/Banner.vue'
 import DetailHeader from '@/components/detail/Header.vue'
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
+import { isDebugEnable } from '@/common-js/debugEnable.js'
+import { logger } from '@/common-js/logger.js'
 
-const defaultImgSrc = ref(
-  'https://dimg04.c-ctrip.com/images/0306612000cwxiuf0E1FC_C_750_420_Q90.jpg'
-)
+const defaultImgSrc = ref('')
 const detailData = ref({})
 const images = ref([])
 
@@ -16,6 +16,9 @@ onMounted(async () => {
     DepartureCityId: null
   })
   let data_ = data.data
+  if (isDebugEnable) {
+    logger.debug('Detail data:', data_)
+  }
   const { BasicInfo, MediaInfo, TagGroupInfo } = data_
   detailData.value = { BasicInfo, MediaInfo, TagGroupInfo }
   defaultImgSrc.value = MediaInfo?.ImgList?.[0]?.UrlList?.[0]?.Value

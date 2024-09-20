@@ -8,7 +8,7 @@ const piniaStore = usePiniaStore() // 获取 pinia store
 defineProps({
   defaultImgSrc: {
     type: String,
-    default: 'https://dimg04.c-ctrip.com/images/0306612000cwxiuf0E1FC_C_750_420_Q90.jpg'
+    default: ''
   },
   detailData: {
     type: Object,
