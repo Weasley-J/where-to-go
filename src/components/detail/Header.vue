@@ -1,5 +1,5 @@
 <script setup>
-import { onActivated, onDeactivated, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps({
   detailData: {
@@ -9,7 +9,9 @@ const props = defineProps({
 })
 
 const headerAbsVisible = ref(true)
-const rawHtmlContent = ref('')
+const rawHtmlContent = computed(() => {
+  return props.detailData.TagGroupInfo?.SpecialTagList?.[0]?.Remark || ''
+})
 
 const handleScroll = () => {
   let top = document.documentElement.scrollTop
@@ -25,7 +27,6 @@ onDeactivated(() => {
 })
 
 onMounted(() => {
-  rawHtmlContent.value = props.detailData.TagGroupInfo?.SpecialTagList?.[0]?.Remark
   window.addEventListener('scroll', handleScroll)
 })
 
