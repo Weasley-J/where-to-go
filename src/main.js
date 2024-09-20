@@ -1,4 +1,5 @@
 import './assets/styles/reset.css'
+import './assets/styles/base.css'
 import './assets/styles/border.css'
 import '@/assets/styles/iconfont.css'
 import 'swiper/swiper-bundle.css'

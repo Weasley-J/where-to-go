@@ -1,0 +1,5 @@
+/* 移除router-link的默认样式 */
+.remove-router-link-default {
+    text-decoration: none;
+    color: #fff;
+}
