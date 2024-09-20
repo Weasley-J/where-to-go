@@ -3,9 +3,9 @@
     <swiper
       ref="swiperRef"
       :autoplay="true"
-      :loop="true"
       :navigation="false"
       :pagination="{ clickable: true }"
+      :loop="true"
       :slides-per-view="1"
       @swiper="onSwiper"
     >
@@ -30,7 +30,7 @@ const props = defineProps({
 
 // 定义数据
 const swiperRef = ref(null)
-const autoplayTimeout = ref(3000) // 自动轮播间隔时间
+const autoplayTimeout = ref(3500) // 自动轮播间隔时间
 reactive({ id: 1 })
 
 const images = ref([{}])
@@ -64,7 +64,7 @@ const onSwiper = (swiper) => {
 const startAutoplay = () => {
   intervalId = setInterval(() => {
     if (null !== swiperRef.value) {
-      swiperRef.value.slideNext()
+      swiperRef.value.slideNext(autoplayTimeout.value, true)
     }
   }, autoplayTimeout.value)
 }
