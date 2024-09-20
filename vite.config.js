@@ -67,8 +67,8 @@ function encodeBase64(str, recursiveCount = 1, currentCount = 0) {
 function decodeBase64(encodedStr) {
   let decode = encodedStr
   if (isBase64(decode)) {
-    decode = atob(decode)
     decode = utf8Decode(decode)
+    decode = atob(decode)
     return decodeBase64(decode)
   } else {
     return decode
