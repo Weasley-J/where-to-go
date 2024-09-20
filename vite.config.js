@@ -7,7 +7,7 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
   const { hosts } = APIs(mode)
-  const { apiUrlZtDujia, apiUrlTouchDujia, apiUrlAliyun } = hosts
+  const { apiUrlToGoZt, apiUrlToGoTouch, apiUrlToGoWeasley } = hosts
 
   return {
     define: {},
@@ -21,17 +21,17 @@ export default defineConfig(({ command, mode }) => {
       open: true,
       proxy: {
         '/api/zt': {
-          target: apiUrlZtDujia,
+          target: apiUrlToGoZt,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/zt/, '')
         },
         '/api/touch': {
-          target: apiUrlTouchDujia,
+          target: apiUrlToGoTouch,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/touch/, '')
         },
         '/api/weasley/aliyun': {
-          target: apiUrlAliyun,
+          target: apiUrlToGoWeasley,
           changeOrigin: true,
           rewrite: (path) => path.replace(/^\/api\/weasley\/aliyun/, '')
         }
@@ -98,9 +98,9 @@ const APIs = (mode) => {
   const isDebugEnable = isTrue(env.VITE_IS_DEBUG_ENABLE)
 
   const apiUrls = [
-    { key: 'apiUrlZtDujia', url: env.APP_API_URL_ZT_DUJIA_QUNAR },
-    { key: 'apiUrlTouchDujia', url: env.APP_API_URL_TOUCH_DUJIA_QUNAR },
-    { key: 'apiUrlAliyun', url: env.APP_API_URL_ALIYUN_WEASLEY }
+    { key: 'apiUrlToGoZt', url: env.APP_API_URL_WHERE_TO_GO_ZT },
+    { key: 'apiUrlToGoTouch', url: env.APP_API_URL_WHERE_TO_GO_TOUCH },
+    { key: 'apiUrlToGoWeasley', url: env.APP_API_URL_WHERE_TO_GO_WEASLEY }
   ]
 
   let encodeByBase64 = false
