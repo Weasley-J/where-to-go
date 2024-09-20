@@ -1,4 +1,6 @@
-# where-to-go-0
+# where-to-go
+
+> Where to go
 
 This template should help get you started developing with Vue 3 in Vite.
 
@@ -21,6 +23,7 @@ npm install
 
 ```sh
 npm run dev
+
 ```
 
 ### Compile and Minify for Production
