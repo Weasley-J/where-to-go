@@ -1,40 +1,42 @@
 <script setup>
 import CommonGallery from '@/components/common/Gallery.vue'
-import { onMounted, ref } from 'vue'
+import { onMounted } from 'vue'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
 
 const piniaStore = usePiniaStore() // 获取 pinia store
 
-onMounted(() => {
-  piniaStore.updateShowGallery(false)
+defineProps({
+  defaultImgSrc: {
+    type: String,
+    default: 'https://dimg04.c-ctrip.com/images/0306612000cwxiuf0E1FC_C_750_420_Q90.jpg'
+  },
+  detailData: {
+    type: Object,
+    default: () => {}
+  },
+  images: {
+    type: Array,
+    default: () => []
+  }
 })
 
-const images = ref([
-  {
-    imgUrl:
-      'https://img1.qunarzz.com/vs_ceph_b2c_001/2bb7a9aa-b536-4287-9814-8bbf75cd5310.jpg_r_1280x840x95_3dcc6133.jpg'
-  },
-  {
-    imgUrl:
-      'https://img1.qunarzz.com/vs_ceph_b2c_001/2bb7a9aa-b536-4287-9814-8bbf75cd5310.jpg_r_1280x840x95_3dcc6133.jpg'
-  },
-  {
-    imgUrl:
-      'https://img1.qunarzz.com/vs_ceph_b2c_001/2bb7a9aa-b536-4287-9814-8bbf75cd5310.jpg_r_1280x840x95_3dcc6133.jpg'
-  }
-])
+onMounted(async () => {
+  piniaStore.updateShowGallery(false)
+})
 </script>
 <template>
   <div class="banner">
     <img
       alt="banner"
+      :src="defaultImgSrc"
       class="banner-img"
-      src="https://dimg04.c-ctrip.com/images/0306612000cwxiuf0E1FC_C_750_420_Q90.jpg"
       @click="piniaStore.updateShowGallery(true)"
     />
     <div class="banner-info">
-      <div class="banner-title">德国3日2晚自由行·包车游</div>
-      <div class="banner-number"><span class="iconfont banner-icon">&#xe8ba;</span>39</div>
+      <div class="banner-title">{{ detailData.BasicInfo?.Title }}</div>
+      <div class="banner-number">
+        <span class="iconfont banner-icon">&#xe8ba;</span>{{ images.length }}
+      </div>
     </div>
     <common-gallery v-show="piniaStore.showGallery" :images="images" />
   </div>
@@ -44,7 +46,6 @@ const images = ref([
 .banner
   position relative;
   overflow hidden
-  /* 修改为合理的比例 */
   padding-bottom 56.25% /* 16:9 比例 */
 
   .banner-img
@@ -55,9 +56,8 @@ const images = ref([
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 214px;
+    bottom: 240px;
     padding: 1rem;
-    line-height .8rem;
     align-items: center
     color: #fff
     background-image: linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.8))
@@ -69,10 +69,10 @@ const images = ref([
 
     .banner-number
       height 1rem
-      line-height .9rem;
+      line-height 1rem
       padding 0 .4rem
       margin-top .14rem;
-      font-size: 1.1rem
+      font-size: 1srem
       border-radius .25rem
       background-color rgba(0, 0, 0, .8)
 
