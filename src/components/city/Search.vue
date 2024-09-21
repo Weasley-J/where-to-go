@@ -1,10 +1,10 @@
 <script setup>
 import { onBeforeMount, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { isDebugEnable } from '@/common-js/debugEnable.js'
-import { logger } from '@/common-js/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
 import router from '@/router/index.js'
-import { destroyScroll, initScroll, refreshScroll } from '@/common-js/scrollHelper.js'
+import { destroyScroll, initScroll, refreshScroll } from '@/common/scrollHelper.js'
 
 const props = defineProps({
   cityModules: {

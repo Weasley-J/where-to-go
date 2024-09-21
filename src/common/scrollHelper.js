@@ -1,6 +1,6 @@
 // This function is used to initialize the scroll functionality of the website.
 import BetterScroll from 'better-scroll'
-import { logger } from '@/common-js/logger.js'
+import { logger } from '@/common/logger.js'
 
 // 初始化 BetterScroll
 export const initScroll = (wrapperRef) => {

@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onActivated, onDeactivated, onMounted, onUnmounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps({
   detailData: {
@@ -14,17 +14,9 @@ const rawHtmlContent = computed(() => {
 })
 
 const handleScroll = () => {
-  let top = document.documentElement.scrollTop
+  let top = document.documentElement.scrollTop || document.body.scrollTop || window.scrollY
   headerAbsVisible.value = top <= 210
 }
-
-onActivated(() => {
-  window.addEventListener('scroll', handleScroll)
-})
-
-onDeactivated(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
 
 onMounted(() => {
   window.addEventListener('scroll', handleScroll)

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
-import { isDebugEnable } from '@/common-js/debugEnable.js'
-import { logger } from '@/common-js/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 
 // Create a Pinia store
 export const usePiniaStore = defineStore('use-pinia-store', {
