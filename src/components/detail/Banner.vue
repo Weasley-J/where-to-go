@@ -2,6 +2,7 @@
 import CommonGallery from '@/components/common/Gallery.vue'
 import { onMounted } from 'vue'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
+import FaceTransition from '@/components/fade/FaceTransition.vue'
 
 const piniaStore = usePiniaStore() // 获取 pinia store
 
@@ -38,7 +39,9 @@ onMounted(async () => {
         <span class="iconfont banner-icon">&#xe8ba;</span>{{ images.length }}
       </div>
     </div>
-    <common-gallery v-show="piniaStore.showGallery" :images="images" />
+    <face-transition>
+      <common-gallery v-show="piniaStore.showGallery" :images="images" />
+    </face-transition>
   </div>
 </template>
 

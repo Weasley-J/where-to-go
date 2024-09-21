@@ -1,8 +1,8 @@
 <script setup>
 import { onBeforeMount, ref } from 'vue'
 import axios from 'axios'
-import { isDebugEnable } from '@/common-js/debugEnable.js'
-import { logger } from '@/common-js/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 
 const recommendationList = ref({ categoryName: '', categories: [] })
 

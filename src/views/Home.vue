@@ -9,10 +9,10 @@ import HomeRecommendation from '@/components/home/Recommendation.vue'
 import HomeWeekend from '@/components/home/Weekend.vue'
 import { Navigation, Pagination } from 'swiper/modules'
 import { useStore } from 'vuex'
-import { isDebugEnable } from '@/common-js/debugEnable.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
 import { usePiniaStore } from '@/stores/usePiniaStore.js'
-import { logger } from '@/common-js/logger.js'
-import isTrue from '@/common-js/isTrue.js'
+import { logger } from '@/common/logger.js'
+import isTrue from '@/common/isTrue.js'
 
 // 定义数据
 const store = useStore()

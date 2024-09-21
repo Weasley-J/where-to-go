@@ -6,8 +6,8 @@ import CityAlphabet from '@/components/city/Alphabet.vue'
 import { computed, onBeforeMount, ref } from 'vue'
 import axios from 'axios'
 import { useStore } from 'vuex'
-import { isDebugEnable } from '@/common-js/debugEnable.js'
-import { logger } from '@/common-js/logger.js'
+import { isDebugEnable } from '@/common/debugEnable.js'
+import { logger } from '@/common/logger.js'
 
 const store = useStore()
 const cityArgs = {
