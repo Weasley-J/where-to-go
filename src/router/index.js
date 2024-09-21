@@ -45,7 +45,10 @@ const router = createRouter({
       component: () => import('../views/city.vue'),
       meta: { keepAlive: true }
     }
-  ]
+  ],
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0 }
+  }
 })
 
 export default router
