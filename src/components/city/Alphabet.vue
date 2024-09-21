@@ -79,6 +79,7 @@ function handleTouchMove(event) {
   // 清除之前的定时器，避免多次触发
   if (touchTimer.value) {
     clearTimeout(touchTimer.value)
+    touchTimer.value = null
   }
 
   // 字母 A 的偏移量和每个字母的高度
