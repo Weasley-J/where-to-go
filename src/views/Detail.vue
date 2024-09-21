@@ -1,16 +1,27 @@
 <script setup>
 import DetailBanner from '@/components/detail/Banner.vue'
 import DetailHeader from '@/components/detail/Header.vue'
-import { onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import axios from 'axios'
 import { isDebugEnable } from '@/common-js/debugEnable.js'
 import { logger } from '@/common-js/logger.js'
+import { useRoute } from 'vue-router'
 
 const defaultImgSrc = ref('')
 const detailData = ref({})
 const images = ref([])
+const route = useRoute()
+const instance = getCurrentInstance() // 获取当前实例
 
-onMounted(async () => {
+defineOptions({
+  name: 'Detail'
+})
+
+async function getProductDetail() {
+  const productId = route.params.id // get product id
+  if (isDebugEnable) {
+    logger.debug('Detail productId:', productId)
+  }
   const { data } = await axios.post('/api/touch/gw/ctr/productDetailV5', {
     ProductId: 41421113,
     DepartureCityId: null
@@ -29,6 +40,10 @@ onMounted(async () => {
       imgUrl: UrlList?.[0]?.Value
     })
   })
+}
+
+onMounted(async () => {
+  await getProductDetail()
 })
 </script>
 

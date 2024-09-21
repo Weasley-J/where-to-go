@@ -1,19 +1,19 @@
 # 1 Where to go
 
-1.1 video thumbnail
+1.1 video thumbnail overview
 ![Video Preview](thumbnail/Picsew_20240921021232.JPEG)
 ![Video Preview](thumbnail/Picsew_20240921021319.JPEG)
 
-1.2 [点击这里查看视频](thumbnail/video-thumbnail.mp4)
+1.2 [Click here to watch video](thumbnail/video-thumbnail.mp4)
 
-1.3 Demo video
+1.3 Video demonstration
 
 <video style="transform: scale(0.35); transform-origin: top left;" controls>
   <source src="thumbnail/video-thumbnail.mp4" type="video/mp4">
   您的浏览器不支持 HTML5 视频标签。
 </video>
 
-# 2 Project Setup
+# 2 Project setup
 
 This template should help get you started developing with Vue 3 in Vite.
 
