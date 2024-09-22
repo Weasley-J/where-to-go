@@ -5,18 +5,11 @@
 ![Video Preview](thumbnail/Picsew_20240921021232.JPEG)
 ![Video Preview](thumbnail/Picsew_20240921021319.JPEG)
 
-## 1.2 [Click here to watch video](thumbnail/video-thumbnail.mp4)
+## 1.2 gif-thumbnail
 
-## 1.3 gif-thumbnail
+<img src="thumbnail/gif-thumbnail.gif" width="50%" alt="GIF Thumbnail">
 
- <img src="thumbnail/gif-thumbnail.gif" width="50%" alt="GIF Thumbnail">
-
-## 1.4 Video demonstration
-
-<video style="transform: scale(0.35); transform-origin: top left;" controls>
-  <source src="thumbnail/video-thumbnail.mp4" type="video/mp4">
-  您的浏览器不支持 HTML5 视频标签。
-</video>
+## 1.3 [Click to watch video](thumbnail/video-thumbnail.mp4)
 
 # 2 Project setup
 
