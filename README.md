@@ -1,12 +1,17 @@
 # 1 Where to go
 
-1.1 video thumbnail overview
+## 1.1 video thumbnail overview
+
 ![Video Preview](thumbnail/Picsew_20240921021232.JPEG)
 ![Video Preview](thumbnail/Picsew_20240921021319.JPEG)
 
-1.2 [Click here to watch video](thumbnail/video-thumbnail.mp4)
+## 1.2 [Click here to watch video](thumbnail/video-thumbnail.mp4)
 
-1.3 Video demonstration
+## 1.3 gif-thumbnail
+
+ <img src="thumbnail/gif-thumbnail.gif" width="50%" alt="GIF Thumbnail">
+
+## 1.4 Video demonstration
 
 <video style="transform: scale(0.35); transform-origin: top left;" controls>
   <source src="thumbnail/video-thumbnail.mp4" type="video/mp4">
