@@ -34,9 +34,7 @@ const touchTimer = ref(null)
 
 onBeforeMount(() => {
   // 排序: A - Z
-  cityLetters.value = Object.keys(props.cityModules.domestic || {}).sort((a, b) =>
-    a.localeCompare(b)
-  )
+  cityLetters.value = Object.keys(props.cityModules.domestic || {}).sort((a, b) => a.localeCompare(b))
 })
 
 onUpdated(() => {
@@ -99,9 +97,7 @@ function handleTouchMove(event) {
     if (index >= 0 && index < cityLetters.value.length) {
       const indexLetter = cityLetters.value[index]
       if (isDebugEnable) {
-        logger.debug(
-          `Handle scroll events: startY=${startY_}, index=${index}, letter=${indexLetter}`
-        )
+        logger.debug(`Handle scroll events: startY=${startY_}, index=${index}, letter=${indexLetter}`)
       }
       handleClickCityLetter(indexLetter) // 触发点击事件
     }

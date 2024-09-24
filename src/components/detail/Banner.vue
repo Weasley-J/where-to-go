@@ -27,17 +27,10 @@ onMounted(async () => {
 </script>
 <template>
   <div class="banner">
-    <img
-      alt="banner"
-      :src="defaultImgSrc"
-      class="banner-img"
-      @click="piniaStore.updateShowGallery(true)"
-    />
+    <img :src="defaultImgSrc" alt="banner" class="banner-img" @click="piniaStore.updateShowGallery(true)" />
     <div class="banner-info">
       <div class="banner-title">{{ detailData.BasicInfo?.Title }}</div>
-      <div class="banner-number">
-        <span class="iconfont banner-icon">&#xe8ba;</span>{{ images.length }}
-      </div>
+      <div class="banner-number"><span class="iconfont banner-icon">&#xe8ba;</span>{{ images.length }}</div>
     </div>
     <face-transition>
       <common-gallery v-show="piniaStore.showGallery" :images="images" />
