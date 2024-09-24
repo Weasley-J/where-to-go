@@ -195,7 +195,7 @@ watch(route, async (to, from) => {
     .button
       height .88rem
       margin .22rem
-      pading .1rem 0
+      padding .1rem 0
       text-align center
       vertical-align center
       line-height .88rem
