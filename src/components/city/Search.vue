@@ -63,10 +63,7 @@ watch(
     if (timer.value) clearTimeout(timer.value) // 取消上一次的搜索请求
     timer.value = setTimeout(() => {
       flattenCities.value.forEach(({ flag, cityCode, name, pinyin }) => {
-        if (
-          name.includes(_keyword) ||
-          pinyin?.toString()?.toLowerCase().includes(_keyword.toLowerCase())
-        ) {
+        if (name.includes(_keyword) || pinyin?.toString()?.toLowerCase().includes(_keyword.toLowerCase())) {
           searchResults.value.push({ flag, cityCode, name, pinyin })
         }
       })
@@ -91,12 +88,7 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="search">
-    <input
-      v-model="piniaStore.keyword"
-      class="search-input"
-      placeholder="城市名/拼音"
-      type="text"
-    />
+    <input v-model="piniaStore.keyword" class="search-input" placeholder="城市名/拼音" type="text" />
     <div v-show="piniaStore.showSearch" ref="wrapper" class="search-content">
       <div>
         <ul v-for="({ flag, cityCode, name, pinyin }, idx) in searchResults" :key="idx">

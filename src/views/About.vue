@@ -59,10 +59,9 @@ function gotoHome() {
       <h2 class="centered-text" @click="gotoHome">Welcome to {{ data.appInfo.appName }}</h2>
     </div>
     <p class="border-bottom" style="margin: 10px 0 10px">
-      This APP created with <span style="color: red">Vite</span>. Powered by Vue<span
-        style="color: red"
-        >{{ (data?.vueVersion ? ' v' : '').concat(data.vueVersion) }}</span
-      >
+      This APP created with <span style="color: red">Vite</span>. Powered by Vue<span style="color: red">{{
+        (data?.vueVersion ? ' v' : '').concat(data.vueVersion)
+      }}</span>
     </p>
     <p class="border-bottom">应用 ID: {{ data.appInfo.appId }}</p>
     <p class="border-bottom">运行环境 : {{ data.appInfo.appEnv }}</p>
@@ -70,9 +69,7 @@ function gotoHome() {
       API URL: <a :href="data.appInfo?.apiUrl" target="_blank">{{ data.appInfo.apiUrl }}</a>
     </p>
     <div style="text-align: center; margin-top: 38px; margin-bottom: 38px">
-      <router-link class="navigation-button border-bottom" style="text-decoration: none" to="/"
-        >首页
-      </router-link>
+      <router-link class="navigation-button border-bottom" style="text-decoration: none" to="/">首页</router-link>
     </div>
     <div v-show="showJSONData">
       <ul v-for="(item, index) of whereToGoIconSrcPackage" :key="index">

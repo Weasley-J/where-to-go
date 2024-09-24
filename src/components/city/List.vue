@@ -119,11 +119,7 @@ watch(route, async (to, from) => {
       <div class="area">
         <div class="title border-topbottom">热门城市</div>
         <div class="button-list">
-          <div
-            v-for="({ flag, name, pinyin, cityCode }, index) of provinceList"
-            :key="index"
-            class="button-wrapper"
-          >
+          <div v-for="({ flag, name, pinyin, cityCode }, index) of provinceList" :key="index" class="button-wrapper">
             <div class="button" @click="handleClickCity(name)">{{ name }}</div>
           </div>
         </div>
@@ -131,11 +127,7 @@ watch(route, async (to, from) => {
       <div class="area">
         <div class="title border-topbottom">附近城市</div>
         <div class="button-list">
-          <div
-            v-for="({ sightId, placeName, imgUrl }, index) in currentCities"
-            :key="sightId"
-            class="button-wrapper"
-          >
+          <div v-for="({ sightId, placeName, imgUrl }, index) in currentCities" :key="sightId" class="button-wrapper">
             <div class="button" @click="handleClickCity(placeName)">
               {{ placeName }}
             </div>
