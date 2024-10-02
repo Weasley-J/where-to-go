@@ -58,7 +58,7 @@ const props = defineProps({
   .wrapper
     height 0
     width 100%
-    padding-bottom 56.25% /* 改为16:9比例，或你想要的比例 */
+    padding-bottom 53.98%
     background-color #fff
 
     .swiper-pagination-fraction

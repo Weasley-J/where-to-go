@@ -2,10 +2,12 @@
  * This function is used to convert a string or boolean value to boolean.
  */
 function isTrue(value) {
+  if (typeof value === 'boolean') return value
   if (typeof value === 'string') {
-    return value.toLowerCase() === 'true' || value.toLowerCase() === '1'
+    const lowerValue = value.toLowerCase()
+    return ['true', '1', 'on', 'yes'].includes(lowerValue)
   }
-  return Boolean(value).valueOf()
+  return false
 }
 
 export default isTrue
