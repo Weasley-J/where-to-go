@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => {
+export default defineConfig(({ mode }) => {
   const { hosts } = APIs(mode)
   const { apiUrlToGoZt, apiUrlToGoTouch, apiUrlToGoWeasley } = hosts
 
@@ -42,52 +42,58 @@ export default defineConfig(({ command, mode }) => {
 
 // Helper functions
 
-function isBase64(str) {
-  const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
-  if (!base64Regex.test(str)) {
-    return false
-  }
-  try {
-    atob(str)
-    return true
-  } catch (e) {
-    return false
-  }
-}
+export const base64Utils = {
+  defaultRecursiveCount: 15,
+  isBase64(str) {
+    const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/
+    if (!base64Regex.test(str)) return false
+    try {
+      atob(str)
+      return true
+    } catch {
+      return false
+    }
+  },
 
-function encodeBase64(str, recursiveCount = 1, currentCount = 0) {
-  if (currentCount >= recursiveCount) {
-    return str
-  }
-  const utf8Bytes = new TextEncoder().encode(str)
-  const base64String = btoa(String.fromCharCode(...utf8Bytes))
-  return encodeBase64(base64String, recursiveCount, currentCount + 1)
-}
+  encodeBase64(str, recursiveCount = 1, currentCount = 0) {
+    if (currentCount >= recursiveCount) return str
+    const utf8Bytes = new TextEncoder().encode(str)
+    const base64String = btoa(String.fromCharCode(...utf8Bytes))
+    return this.encodeBase64(base64String, recursiveCount, currentCount + 1)
+  },
 
-function decodeBase64(encodedStr) {
-  let decode = encodedStr
-  if (isBase64(decode)) {
-    decode = utf8Decode(decode)
-    decode = atob(decode)
-    return decodeBase64(decode)
-  } else {
-    return decode
-  }
-}
+  decodeBase64(encodedStr, recursiveCount = 1, currentCount = 0) {
+    if (currentCount >= recursiveCount) return encodedStr
 
-function utf8Decode(utf8String) {
-  const bytes = new Uint8Array(utf8String.split('').map((char) => char.charCodeAt(0)))
-  return new TextDecoder().decode(bytes)
+    if (this.isBase64(encodedStr)) {
+      try {
+        const decoded = atob(encodedStr)
+        const utf8Decoded = this.utf8Decode(decoded)
+        return this.decodeBase64(utf8Decoded, recursiveCount, currentCount + 1)
+      } catch {
+        return encodedStr
+      }
+    } else {
+      return encodedStr
+    }
+  },
+
+  utf8Decode(utf8String) {
+    const bytes = new Uint8Array([...utf8String].map((char) => char.charCodeAt(0)))
+    return new TextDecoder().decode(bytes)
+  }
 }
 
 /**
  * This function is used to convert a string or boolean value to boolean.
  */
 function isTrue(value) {
+  if (typeof value === 'boolean') return value
   if (typeof value === 'string') {
-    return value.toLowerCase() === 'true' || value.toLowerCase() === '1'
+    const lowerValue = value.toLowerCase()
+    return ['true', '1', 'on', 'yes'].includes(lowerValue)
   }
-  return Boolean(value).valueOf()
+  return false
 }
 
 /**
@@ -105,9 +111,9 @@ const APIs = (mode) => {
 
   let encodeByBase64 = false
   apiUrls.forEach((api) => {
-    if (isBase64(api.url)) {
+    if (base64Utils.isBase64(api.url)) {
       encodeByBase64 = true
-      api.url = decodeBase64(api.url)
+      api.url = base64Utils.decodeBase64(api.url, 20)
     }
   })
 
