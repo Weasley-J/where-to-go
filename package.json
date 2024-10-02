@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "build:dev": "vite build --mode development",
     "build": "vite build",
-    "format": "prettier --write src/",
+    "format": "npx prettier . --write",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
