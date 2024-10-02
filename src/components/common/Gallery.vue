@@ -67,4 +67,5 @@ const props = defineProps({
     .gallery-img img
       width 100%
       height 100%
+      object-fit cover;
 </style>
